@@ -1,0 +1,195 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz}
+\usepackage{lmodern}
+\usepackage{hyperref}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{parskip}
+\usepackage{tabularx}
+\usepackage[utf8]{inputenc}
+\usepackage{tgpagella}
+\usepackage[T1]{fontenc}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{tcolorbox}
+\usepackage{enumitem}
+
+\newcommand{\separator}{\noindent\rule{\linewidth}{1pt}}
+
+\title{History of Linux and the command line}
+\author{Zubin}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+
+\separator
+%-----------------------------------------------------------------
+
+
+\section{Operating Systems: Definition and Services}
+
+\subsection{What is an Operating System?}
+An \textbf{operating system (OS)} is an intermediary between computer hardware (memory, processor, network cards, etc.) and the applications that users interact with.
+\begin{itemize}
+    \item Users interact with applications.
+    \item Applications request services from the operating system.
+    \item The operating system manages and exploits hardware resources to provide services to the applications.
+\end{itemize}
+
+\subsection{Examples of Operating Systems}
+\begin{itemize}
+    \item Microsoft Windows
+    \item Apple macOS and iOS
+    \item Google Android
+    \item Unix and Unix-like systems such as Linux
+\end{itemize}
+
+\subsection{Unix and Linux}
+\begin{itemize}
+    \item Unix has been around longer than Linux.
+    \item Linux is a \textbf{Unix-like, open-source operating system}. The Linux kernel, created by \textbf{Linus Torvalds} and expanded upon by thousands of programmers, is available to the world for free.
+\end{itemize}
+
+\subsection{Core Services Provided by an Operating System}
+
+\subsubsection{File Management}
+\begin{itemize}
+    \item Managing the logical tree structure of files and their physical layout on storage devices (hard drives).
+\end{itemize}
+
+\subsubsection{Memory Management}
+\begin{itemize}
+    \item Allocation, deallocation, and sharing of memory among multiple running processes.
+\end{itemize}
+
+\subsubsection{Process Management}
+\begin{itemize}
+    \item Creation, execution, and termination of running applications (processes).
+\end{itemize}
+
+\subsubsection{Input/Output Management}
+\begin{itemize}
+    \item Managing hardware like network interfaces, sound cards, video cards, printers, and other peripherals.
+\end{itemize}
+
+\section{Genesis of Operating Systems}
+
+\subsection{Early Computers (Mid-1940s)}
+\begin{itemize}
+    \item The first computers were built using \textbf{vacuum tubes} (evacuated glass containers that control electric current).
+    \item These were huge machines that filled entire rooms but performed more slowly than a modern hand-held calculator.
+\end{itemize}
+
+\subsection{Programming and Operation}
+\begin{itemize}
+    \item Programming was done manually by rearranging hardware components.
+    \item Input/output capabilities were very limited.
+    \item A single individual often acted as the designer, builder, programmer, and operator.
+\end{itemize}
+
+\subsection{Invention of the Transistor}
+\begin{itemize}
+    \item The invention of the transistor led to smaller, more reliable computers.
+    \item This innovation marked the beginning of operating systems through the appearance of \textbf{punch cards}.
+\end{itemize}
+
+\subsection{Punch Cards and Role Separation}
+\begin{itemize}
+    \item Punch cards are cards with holes in specific locations to encode computer programs and data.
+    \item This led to a separation of roles: programmers prepared the punch cards, and operators physically loaded them into the computer and handled the output.
+\end{itemize}
+
+\subsection{Birth of Operating Systems}
+\begin{itemize}
+    \item Operating systems were invented to manage memory, processes (running programs), and input/output operations like reading punch cards.
+    \item We can date the invention of operating systems to the \textbf{mid-1960s}.
+\end{itemize}
+
+\section{UNIX Genesis}
+
+\subsection{Technological Context}
+\begin{itemize}
+    \item The era of modern computers emerged with the appearance of \textbf{integrated circuits} and magnetic disks.
+    \item This period also saw the development of compatible computer families, such as the \textbf{IBM System/360} (1964), which made a clear distinction between architecture and implementation.
+\end{itemize}
+
+\subsection{Project MAC at MIT}
+\begin{itemize}
+    \item It all started with \textbf{Project MAC} (Mathematics and Computation), founded at MIT.
+    \item It was funded by the US military's research agency (ARPA) and the National Science Foundation.
+    \item The main goal was to develop a \textbf{timesharing system} that would allow a large community of users to access a single computer from multiple locations simultaneously.
+\end{itemize}
+
+\subsection{MULTICS}
+\begin{itemize}
+    \item Developed by MIT, Bell Labs, and General Electric
+    \item Stands for \textbf{Multiplexed Information and Computing Service}
+    \item It evolved beyond timesharing to incorporate features like file sharing, file management, and system security.
+\end{itemize}
+
+\subsection{Challenges of MULTICS}
+\begin{itemize}
+    \item The project proved much more difficult than expected.
+    \item The system became operational in 1969 on the GE-645 computer, but its performance was far below the original targets.
+    \item As a result, Bell Labs withdrew from the project in 1969.
+\end{itemize}
+
+\subsection{Birth of UNIX}
+\begin{itemize}
+    \item Following the withdrawal, Bell Labs engineers \textbf{Ken Thompson} and \textbf{Dennis Ritchie} decided to create a simpler, minimal system.
+    \item Using a little-used DEC PDP-7 machine, they began developing a single-user operating system.
+    \item As a pun on the complexity of MULTICS, they called their system \textbf{UNICS}.
+\end{itemize}
+
+\subsection{Evolution of UNIX}
+\begin{itemize}
+    \item In 1970, the system was enhanced to support multiple users, and its name morphed to \textbf{Unix}.
+    \item At the time, the system was written in the \textbf{B programming language}, which was invented by Ken Thompson.
+\end{itemize}
+
+\subsection{The C Programming Language}
+\begin{itemize}
+    \item In 1971, Dennis Ritchie improved upon B and called it \textbf{New B}.
+    \item By 1972, the changes were so significant that Ritchie renamed his new language the \textbf{C programming language}.
+    \item Ken Thompson then rewrote the entire Unix operating system in C.
+\end{itemize}
+
+\subsection{Spread of UNIX}
+\begin{itemize}
+    \item The C source code for Unix was distributed to universities and research centers for educational purposes.
+    \item From 1975 onward, a very active community emerged around Unix and C.
+    \item Other notable developers included:
+          \begin{itemize}
+              \item Douglas McIlroy (McElroy)
+              \item Joseph Ossanna
+              \item Rudd Canaday
+          \end{itemize}
+\end{itemize}
+
+\subsection{Key Milestones}
+\begin{itemize}
+    \item 1978: Brian Kernighan and Dennis Ritchie published the book \textit{The C Programming Language}.
+    \item 1983: Thompson and Ritchie received the \textbf{Turing Award}, the highest distinction in computer science, for their invention.
+\end{itemize}
+
+\subsection{Legacy of UNIX}
+\begin{itemize}
+    \item The concepts introduced by Unix are ubiquitous today and form the foundation for many modern operating systems.
+    \item Derivatives of Unix include:
+          \begin{itemize}
+              \item macOS
+              \item iOS
+              \item Android
+              \item Linux, which is installed on the vast majority of today's servers and connected objects.
+          \end{itemize}
+\end{itemize}
+
+\end{document}

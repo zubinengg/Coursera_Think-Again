@@ -1,7 +1,7 @@
-/How to Understand Arguments.aux
-/How to Understand Arguments.fdb_latexmk
-/How to Understand Arguments.fls
-/How to Understand Arguments.log
-/How to Understand Arguments.out
-/How to Understand Arguments.synctex.gz
-/How to Understand Arguments.toc
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+*.toc
