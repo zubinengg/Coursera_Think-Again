@@ -276,4 +276,95 @@ An \textbf{operating system (OS)} is an intermediary between computer hardware (
 
 \separator
 
+\section{First commands: echo 'hello world', date, cal, history, whoami, hostname, uptime, clear, command not found, man, command options}
+
+\subsection{The Command Prompt}
+The command prompt is the visual indicator that the system is ready to receive input. On WebLinux, it appears as a tilde, a space, a dollar sign, and a space (\texttt{\textasciitilde\ \$}), followed by a blinking cursor. When you type a command and press \textbf{Enter}, the shell interprets the command and displays the result.
+
+\subsection{User and System Identification}
+\begin{itemize}
+    \item \textbf{whoami}: Displays the current username. On WebLinux, this is simply \texttt{user}.
+    \item \textbf{logname}: Similar to \texttt{whoami}, it prints the name of the current user.
+    \item \textbf{id}: Displays the user ID (UID) and group ID (GID). For the default user, these are typically 1000.
+    \item \textbf{hostname}: Displays the name of the computer (e.g., \texttt{openrisk}).
+    \item \textbf{uname}: Prints system information. By default, it prints the kernel name (\texttt{Linux}).
+    \item \textbf{uname -a}: The \texttt{-a} option prints all system information, including the network node hostname, kernel release, and version.
+\end{itemize}
+
+\subsection{Basic Interaction and Output}
+\begin{itemize}
+    \item \textbf{echo}: Prints the arguments passed to it. For example, \texttt{echo hello} prints "hello".
+    \item \textbf{echo \$0}: Displays the name of the shell interpreter (e.g., \texttt{sh}).
+    \item \textbf{clear}: Clears the terminal screen.
+    \item \textbf{history}: Displays a list of previously executed commands. You can use the \textbf{Up} and \textbf{Down} arrow keys to navigate through this history.
+\end{itemize}
+
+\subsection{Time and Date}
+\begin{itemize}
+    \item \textbf{uptime}: Displays how long the system has been running, along with the current time and load averages.
+    \item \textbf{cal}: Displays a calendar. The \texttt{-j} option displays Julian dates (days numbered from 1 to 366).
+    \item \textbf{date}: Displays the current date and time. It supports formatting options:
+          \begin{itemize}
+              \item \texttt{date +"\%T"}: Displays time only.
+              \item \texttt{date +"\%A \%d \%B \%Y"}: Displays full weekday, day, month, and year.
+          \end{itemize}
+\end{itemize}
+
+\subsection{Getting Help and Manuals}
+\begin{itemize}
+    \item \textbf{--help}: Many commands support this option to display usage summaries (e.g., \texttt{whoami --help}).
+    \item \textbf{man}: The manual command. Typing \texttt{man <command>} usually opens the manual page for that command.
+          \begin{itemize}
+              \item On full Linux systems, this provides detailed documentation.
+              \item On WebLinux, manual pages may be removed to save space, resulting in "no manual entry".
+              \item Press \textbf{q} to exit the manual viewer and return to the prompt.
+          \end{itemize}
+\end{itemize}
+
+\separator
+
+\section{Interactive commands: top, htop, nano, vim, how to get back to the prompt}
+
+\subsection{Interactive Programs}
+Unlike basic commands that print output and return to the prompt immediately, interactive commands launch programs that take over the terminal interface. The command prompt (e.g., \texttt{\textasciitilde\ \$}) disappears, and the user must interact with the running program. To return to the command line, one must know how to exit these specific applications.
+
+\subsection{System Monitoring: top and htop}
+\begin{itemize}
+    \item \textbf{top}: Provides a real-time view of process activity, CPU usage, and memory usage.
+          \begin{itemize}
+              \item \textbf{To Exit:} Press \textbf{q} or use the interrupt key combination \textbf{Ctrl+C} (often denoted as \texttt{\^{}C}).
+          \end{itemize}
+    \item \textbf{htop}: A more advanced, colorful version of \texttt{top} with graphical bars for system resources.
+          \begin{itemize}
+              \item \textbf{To Exit:} Press \textbf{F10}, \textbf{q}, or \textbf{Ctrl+C}.
+          \end{itemize}
+\end{itemize}
+
+\subsection{Text Editors: nano and vim}
+\begin{itemize}
+    \item \textbf{nano}: A simple file editor. It displays a shortcut menu at the bottom where the caret symbol (\texttt{\^{}}) represents the Control key.
+          \begin{itemize}
+              \item \textbf{To Exit:} Press \textbf{Ctrl+X} (indicated as \texttt{\^{}X}).
+              \item Note: \textbf{Ctrl+C} does not exit nano.
+          \end{itemize}
+    \item \textbf{vim}: A famous but complex editor. It operates in different modes (e.g., Insert mode for typing, Normal mode for commands).
+          \begin{itemize}
+              \item \textbf{To Exit:}
+                    \begin{enumerate}
+                        \item Press \textbf{Esc} to ensure you are in Normal mode.
+                        \item Type \texttt{:q} (colon, q) and press \textbf{Enter}.
+                        \item If changes were made and you want to force quit without saving, type \texttt{:q!} and press \textbf{Enter}.
+                    \end{enumerate}
+          \end{itemize}
+\end{itemize}
+
+\subsection{Summary of Exit Strategies}
+If you are stuck in a program and want to return to the prompt:
+\begin{enumerate}
+    \item Try pressing \textbf{q} (quit).
+    \item Try pressing \textbf{Ctrl+C} (interrupt).
+    \item Look for on-screen help (e.g., \texttt{\^{}X} or \textbf{F10}).
+    \item If in \texttt{vim}, use \textbf{Esc} followed by \texttt{:q!}.
+\end{enumerate}
+
 \end{document}
