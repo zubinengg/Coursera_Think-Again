@@ -367,4 +367,33 @@ If you are stuck in a program and want to return to the prompt:
     \item If in \texttt{vim}, use \textbf{Esc} followed by \texttt{:q!}.
 \end{enumerate}
 
+\separator
+
+\section{Filesystem}
+
+\subsection{Evolution of Storage}
+One role of the operating system is to manage files. Historically, data was stored on punch cards, where huge physical volumes were required to store what now fits on a small flash drive (e.g., 4.3 billion characters). The advent of disk drives revolutionized programming by allowing millions of files to be stored and accessed instantly without physical handling.
+
+\subsection{The File System Tree}
+The file system is organized as a tree hierarchy:
+\begin{itemize}
+    \item \textbf{Root (\texttt{/})}: The starting point of the file system.
+    \item \textbf{Directories}: Files are grouped into folders. A path is denoted using slashes, e.g., \texttt{/folder/subfolder/file}.
+\end{itemize}
+
+\subsection{Linux Directory Structure}
+Based on the Filesystem Standard (FSSTND) initiated in 1993, most Linux distributions use the following directories:
+\begin{itemize}
+    \item \textbf{/bin}: Basic executable commands (binaries) for a minimal system.
+    \item \textbf{/sbin}: System binaries for the \textbf{super user} (root).
+    \item \textbf{/home}: Contains directories for standard users (e.g., \texttt{/home/user}).
+    \item \textbf{/root}: The home directory specifically for the root user.
+    \item \textbf{/etc}: Configuration files. Stands for \textbf{Editable Text Configuration}.
+    \item \textbf{/lib}: Libraries required by binaries in \texttt{/bin} and \texttt{/sbin}.
+    \item \textbf{/tmp}: Temporary files. Content is usually deleted upon restart.
+    \item \textbf{/var}: Variable files such as logs (\texttt{/var/log}), databases, and emails.
+    \item \textbf{/usr}: \textbf{Unix System Resources} (not "user"). Contains non-essential applications and libraries.
+    \item \textbf{/dev}: Device files. Linux treats devices as files (e.g., \texttt{/dev/mem}, \texttt{/dev/audio}).
+\end{itemize}
+
 \end{document}
