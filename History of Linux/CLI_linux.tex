@@ -396,4 +396,60 @@ Based on the Filesystem Standard (FSSTND) initiated in 1993, most Linux distribu
     \item \textbf{/dev}: Device files. Linux treats devices as files (e.g., \texttt{/dev/mem}, \texttt{/dev/audio}).
 \end{itemize}
 
+\separator
+
+\section{pwd, cd, ls, absolute path, relative path (1)}
+
+\subsection{Navigating the File System}
+Navigation is a core skill in the Linux command line. The primary commands for this are \texttt{pwd}, \texttt{ls}, and \texttt{cd}.
+
+\subsection{Print Working Directory (pwd)}
+\begin{itemize}
+    \item \textbf{pwd}: Stands for "print working directory".
+    \item It displays the absolute path of the directory you are currently located in.
+    \item When you first log in, you are typically in your home directory (e.g., \texttt{/home/user}).
+    \item The tilde (\texttt{\textasciitilde}) in the command prompt represents this home directory.
+\end{itemize}
+
+\subsection{Listing Files (ls)}
+\begin{itemize}
+    \item \textbf{ls}: Lists the files and directories in the current working directory.
+    \item \textbf{ls -a}: Lists all files, including \textbf{hidden files}.
+          \begin{itemize}
+              \item Hidden files and directories start with a dot (e.g., \texttt{.config}).
+              \item This view reveals the special directories \texttt{.} (current) and \texttt{..} (parent).
+          \end{itemize}
+    \item \textbf{ls -al}: Combines options to show a detailed list of all files, including hidden ones.
+          \begin{itemize}
+              \item Lines starting with \texttt{d} are directories.
+              \item Lines starting with \texttt{-} are regular files.
+          \end{itemize}
+\end{itemize}
+
+\subsection{Changing Directories (cd)}
+\begin{itemize}
+    \item \textbf{cd}: Stands for "change directory".
+    \item \textbf{cd /}: Moves to the root directory.
+    \item \textbf{cd} (without arguments): Returns to the user's home directory.
+    \item \textbf{cd ..}: Moves up one level to the parent directory.
+\end{itemize}
+
+\subsection{Absolute vs. Relative Paths}
+\begin{itemize}
+    \item \textbf{Absolute Path}:
+          \begin{itemize}
+              \item Always starts with the root directory slash (\texttt{/}).
+              \item Describes the full path from the root to the destination (e.g., \texttt{/home/user}, \texttt{/sys/module}).
+              \item It works from anywhere in the file system.
+          \end{itemize}
+    \item \textbf{Relative Path}:
+          \begin{itemize}
+              \item Does \textbf{not} start with a slash.
+              \item Describes the path relative to the current working directory.
+              \item \texttt{.} (dot): Refers to the current directory (e.g., \texttt{./sys} is the same as \texttt{sys}).
+              \item \texttt{..} (dot dot): Refers to the parent directory.
+              \item You can chain them (e.g., \texttt{../../} moves up two levels).
+          \end{itemize}
+\end{itemize}
+
 \end{document}
