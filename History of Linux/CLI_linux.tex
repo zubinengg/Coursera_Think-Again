@@ -664,4 +664,52 @@ When the output of a command is too long to fit on the screen (e.g., \texttt{cat
 \end{tcolorbox}
 This will show the list of files with line numbers and a status bar at the bottom.
 
+\separator
+
+\section{mkdir, rm -r}
+This section explains how to create and delete directories (folders).
+
+\subsection{Creating Directories (mkdir)}
+The \texttt{mkdir} command is used to "make directories".
+\begin{itemize}
+    \item \textbf{Single Directory:} To create one directory.
+          \begin{tcolorbox}
+              \texttt{\$ mkdir folder}
+          \end{tcolorbox}
+    \item \textbf{Multiple Directories:} To create several directories at the same level.
+          \begin{tcolorbox}
+              \texttt{\$ mkdir d1 d2 d3}
+          \end{tcolorbox}
+    \item \textbf{Nested Directories (-p):} To create a directory and any necessary parent directories that do not already exist, use the \texttt{-p} (parents) option.
+          \begin{tcolorbox}
+              \texttt{\$ mkdir -p D1/D2/D3}
+          \end{tcolorbox}
+          This command creates directory \texttt{D3} inside \texttt{D2}, which is inside \texttt{D1}.
+\end{itemize}
+
+\subsection{Deleting Directories (rm -r)}
+The standard \texttt{rm} command does not delete directories. To do so, you must use the recursive option.
+
+\begin{itemize}
+    \item \textbf{Recursive Deletion (-r):} The \texttt{-r} (or \texttt{--recursive}) option tells \texttt{rm} to delete a directory and all of its contents, including subdirectories.
+          \begin{tcolorbox}
+              \texttt{\$ rm -r folder}
+          \end{tcolorbox}
+          \textbf{Warning:} This command is extremely powerful and deletes files and directories permanently without confirmation. Use it with great care.
+
+    \item \textbf{Interactive Deletion (-i):} To add a layer of safety, combine the \texttt{-r} option with \texttt{-i} (interactive). This will prompt you to confirm every deletion.
+          \begin{tcolorbox}
+              \texttt{\$ rm -ri folder} \\
+              \texttt{rm: descend into directory 'folder'? y} \\
+              \texttt{rm: remove regular empty file 'folder/f1'? y} \\
+              \texttt{rm: remove directory 'folder'? y}
+          \end{tcolorbox}
+
+    \item \textbf{Automating Confirmation (yes):} The \texttt{yes} command repeatedly outputs 'y'. You can pipe its output to an interactive command to automatically answer "yes" to all prompts.
+          \begin{tcolorbox}
+              \texttt{\$ yes | rm -ri folder}
+          \end{tcolorbox}
+          This command will automatically confirm and delete the \texttt{folder} directory and all its contents.
+\end{itemize}
+
 \end{document}
