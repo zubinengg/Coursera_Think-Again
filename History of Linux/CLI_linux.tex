@@ -452,4 +452,216 @@ Navigation is a core skill in the Linux command line. The primary commands for t
           \end{itemize}
 \end{itemize}
 
+\separator
+
+\section{pwd, cd, ls, absolute path, relative path (2)}
+
+This section covers how to determine a file's type, find the absolute path of a file or directory, and locate an installed program on the system.
+
+\subsection{Getting File Type (file)}
+The \texttt{file} command determines the type of a file.
+
+\begin{itemize}
+    \item \textbf{Source Code:} Running \texttt{file program.c} on a C source file will identify it as such.
+          \begin{tcolorbox}
+              \texttt{\$ file program.c} \\
+              \texttt{program.c: C source, ASCII text}
+          \end{tcolorbox}
+
+    \item \textbf{Plain Text:} After creating a new file named \texttt{f} with some text using an editor like \texttt{nano}, the \texttt{file} command will identify it as ASCII text.
+          \begin{tcolorbox}
+              \texttt{\$ file f} \\
+              \texttt{f: ASCII text}
+          \end{tcolorbox}
+
+    \item \textbf{Directory:} The command can also identify directories.
+          \begin{tcolorbox}
+              \texttt{\$ file /bin} \\
+              \texttt{/bin: directory}
+          \end{tcolorbox}
+
+    \item \textbf{Symbolic Link:} Some files are symbolic links, which are pointers to other files. The \texttt{file} command reveals this relationship.
+          \begin{tcolorbox}
+              \texttt{\$ file /bin/cat} \\
+              \texttt{/bin/cat: symbolic link to /bin/busybox}
+          \end{tcolorbox}
+
+    \item \textbf{Executable Binary:} Following the symbolic link, we can inspect the actual program file. Executable files are often in ELF (Executable and Linkable Format).
+          \begin{tcolorbox}
+              \texttt{\$ file /bin/busybox} \\
+              \texttt{/bin/busybox: ELF 32-bit LSB executable, OpenRISC...}
+          \end{tcolorbox}
+          This output indicates it is a 32-bit executable program for the OpenRISC processor architecture.
+
+    \item \textbf{Other System Files:} The file system contains many types of files. For example, in \texttt{/sys/kernel}:
+          \begin{itemize}
+              \item \texttt{file notes} might return something complex like \texttt{X11 SNF font data, MSB first}.
+              \item \texttt{file fscaps} might return something simple like \texttt{ASCII text}.
+          \end{itemize}
+\end{itemize}
+
+\subsection{Finding the Real Path (realpath)}
+The \texttt{realpath} command resolves all symbolic links and references to \texttt{.} and \texttt{..} to print the canonical absolute path of a file or directory.
+\begin{itemize}
+    \item For a simple file in the home directory, it returns the full path.
+          \begin{tcolorbox}
+              \texttt{\$ realpath f} \\
+              \texttt{/home/user/f}
+          \end{tcolorbox}
+    \item For a symbolic link, it returns the path of the file it points to.
+          \begin{tcolorbox}
+              \texttt{\$ realpath /bin/cat} \\
+              \texttt{/bin/busybox}
+          \end{tcolorbox}
+\end{itemize}
+
+\subsection{Locating Executables (which)}
+The \texttt{which} command shows the full path of an executable program by searching the directories listed in the user's \texttt{PATH} environment variable. This is useful for finding where a command is installed.
+\begin{itemize}
+    \item \texttt{which realpath} $\rightarrow$ \texttt{/usr/bin/realpath}
+    \item \texttt{which cat} $\rightarrow$ \texttt{/bin/cat}
+    \item \texttt{which ls} $\rightarrow$ \texttt{/bin/ls}
+    \item \texttt{which file} $\rightarrow$ \texttt{/usr/bin/file}
+    \item You can even find the location of the \texttt{which} command itself: \\
+          \texttt{which which} $\rightarrow$ \texttt{/usr/bin/which}
+\end{itemize}
+
+\separator
+
+\section{Touch, rm, names with spaces}
+
+\subsection{Creating Files (touch)}
+We have seen how to create files using a text editor like \texttt{nano}. A simpler way to create an empty file without opening an editor is using the \texttt{touch} command.
+\begin{itemize}
+    \item \textbf{Command:} \texttt{touch filename}
+    \item \textbf{Example:} \texttt{touch file} creates an empty file named "file".
+\end{itemize}
+
+\subsection{Deleting Files (rm)}
+To delete (remove) files, use the \texttt{rm} command.
+\begin{itemize}
+    \item \textbf{Command:} \texttt{rm filename}
+    \item \textbf{Example:} \texttt{rm f} deletes the file named "f".
+    \item \textbf{Warning:} Deleted files are removed permanently and do not go to a trash bin.
+\end{itemize}
+
+\subsection{Filenames with Spaces}
+Spaces in filenames can cause issues because the shell interprets spaces as separators between arguments.
+
+\subsubsection{The Problem}
+If you try to create a file with spaces like \texttt{touch my space file}, the shell interprets this as a request to create three separate files: "my", "space", and "file".
+
+\subsubsection{The Solutions}
+To handle spaces correctly, you have two main options:
+\begin{enumerate}
+    \item \textbf{Backslash Escape:} Use a backslash (\texttt{\textbackslash}) before the space to tell the shell it is part of the name.
+          \begin{tcolorbox}
+              \texttt{\$ touch my\textbackslash\ file}
+          \end{tcolorbox}
+    \item \textbf{Quotes:} Enclose the entire filename in single (\texttt{' '}) or double (\texttt{" "}) quotes.
+          \begin{tcolorbox}
+              \texttt{\$ touch 'my file'}
+          \end{tcolorbox}
+\end{enumerate}
+To remove these files, you must use the same methods (e.g., \texttt{rm 'my file'} or \texttt{rm my\textbackslash\ file}).
+
+\subsubsection{Best Practice}
+It is generally recommended to avoid spaces in filenames to prevent these issues. Use underscores (\texttt{\_}) or hyphens (\texttt{-}) instead (e.g., \texttt{my\_file}).
+
+\subsection{Getting Unstuck (Quotes and Brackets)}
+If you open a quote (single or double), parenthesis, or bracket but forget to close it before pressing Enter, the shell will wait for you to finish the input. The prompt changes (often to \texttt{>}), and standard commands like \texttt{ls} or \texttt{Ctrl+C} might not work immediately.
+
+\textbf{How to exit:}
+\begin{enumerate}
+    \item \textbf{Close the pair:} Type the missing closing character (quote, bracket, etc.) and press Enter. The command will likely fail (e.g., "command not found"), but you will return to the main prompt.
+    \item \textbf{Control+D:} Pressing \texttt{Ctrl+D} sends an "End of File" (EOF) signal. You might need to press it twice or press Enter first to ensure you are on a new line.
+\end{enumerate}
+
+\separator
+
+\section{cat less}
+This section covers how to read and create files using \texttt{cat} and output redirection, and how to view long outputs using the \texttt{more} and \texttt{less} commands.
+
+\subsection{Reading and Writing Files (cat, >)}
+\begin{itemize}
+    \item \textbf{Reading Files:} The \texttt{cat} command (short for "concatenate") is used to print the contents of a file to the terminal.
+          \begin{tcolorbox}
+              \texttt{\$ cat file.txt} \\
+              \texttt{here is a text file} \\
+              \texttt{with a second line}
+          \end{tcolorbox}
+
+    \item \textbf{Output Redirection (>):} The greater-than sign (\texttt{>}) redirects the output of a command into a file instead of printing it to the screen. This will overwrite the file if it already exists.
+          \begin{tcolorbox}
+              \texttt{\$ echo "hello world" > file2.txt}
+          \end{tcolorbox}
+          This command creates \texttt{file2.txt} containing the text "hello world". This can also be used to copy file contents:
+          \begin{tcolorbox}
+              \texttt{\$ cat file2.txt > file3.txt}
+          \end{tcolorbox}
+
+    \item \textbf{Creating Files with cat:} You can use \texttt{cat} to create a file directly from your keyboard input.
+          \begin{tcolorbox}
+              \texttt{\$ cat > anotherfile.txt} \\
+              \texttt{this is another file} \\
+              \texttt{with a new second line} \\
+              \texttt{Ctrl+D}
+          \end{tcolorbox}
+          After typing the command, the terminal waits for your input. Press \textbf{Ctrl+D} on a new line to signal the end of the file and return to the prompt.
+\end{itemize}
+
+\subsection{Viewing Long Output (Pipes, more, less)}
+When the output of a command is too long to fit on the screen (e.g., \texttt{cat /etc/services}), it scrolls by too quickly. To manage this, we can "pipe" the output to a pager program. The pipe operator (\texttt{|}) sends the output of one command to the input of another.
+
+\subsubsection{The \texttt{more} Command}
+\texttt{more} is a basic pager that displays text one screen at a time.
+\begin{itemize}
+    \item \textbf{Usage:} \texttt{cat /etc/services | more} or \texttt{more filename.txt}
+    \item \textbf{Navigation:}
+          \begin{itemize}
+              \item \textbf{Spacebar}: Go to the next page.
+              \item \textbf{q} or \textbf{Ctrl+C}: Quit.
+          \end{itemize}
+    \item It is a simple tool, and \texttt{less} is often preferred.
+\end{itemize}
+
+\subsubsection{The \texttt{less} Command}
+\texttt{less} is a more advanced and powerful pager ("less is more").
+\begin{itemize}
+    \item \textbf{Usage:} \texttt{ls /usr/bin | less} or \texttt{less filename.txt}
+    \item \textbf{Navigation:}
+          \begin{itemize}
+              \item \textbf{Arrows (Up/Down)}: Scroll line by line.
+              \item \textbf{j} / \textbf{k}: Move down / up one line.
+              \item \textbf{Spacebar}: Scroll forward one page.
+              \item \textbf{g} (lowercase): Go to the beginning of the text.
+              \item \textbf{G} (uppercase): Go to the end of the text.
+              \item \textbf{q}: Quit.
+          \end{itemize}
+\end{itemize}
+
+\subsubsection{Searching in \texttt{less}}
+\texttt{less} allows you to search through the text.
+\begin{itemize}
+    \item \textbf{/pattern}: Search forward for the given pattern.
+    \item \textbf{?pattern}: Search backward for the given pattern.
+    \item \textbf{n}: Jump to the next match.
+    \item \textbf{N} (uppercase): Jump to the previous match.
+\end{itemize}
+\begin{tcolorbox}
+    \texttt{\$ ls /usr/bin | less} \\
+    (Inside less, type \texttt{/joe} and press Enter to search for "joe")
+\end{tcolorbox}
+
+\subsubsection{Options for \texttt{less}}
+\texttt{less} can be customized with command-line options.
+\begin{itemize}
+    \item \textbf{-N}: Display line numbers.
+    \item \textbf{-M}: Display a more detailed status line, including the percentage through the file.
+\end{itemize}
+\begin{tcolorbox}
+    \texttt{\$ ls /usr/bin | less -NM}
+\end{tcolorbox}
+This will show the list of files with line numbers and a status bar at the bottom.
+
 \end{document}
