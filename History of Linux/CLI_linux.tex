@@ -755,4 +755,98 @@ Sometimes, even after killing a process, the original terminal can become unresp
     \item \textbf{WebLinux Solution (The Last Resort):} If the terminal is completely stuck, the simplest way to "reboot" WebLinux is to \textbf{reload the browser page}. This will start a fresh Linux environment, but your files will be preserved.
 \end{itemize}
 
+\separator
+
+\section{mv: rename and move}
+This section explains how to move and rename files and directories using the \texttt{mv} command.
+
+\subsection{Moving Files and Directories}
+The \texttt{mv} command is used to move a file or directory from one location to another.
+\begin{itemize}
+    \item \textbf{Move a file into a directory:}
+          \begin{tcolorbox}
+              \texttt{\$ touch f1} \\
+              \texttt{\$ mkdir d1} \\
+              \texttt{\$ mv f1 d1}
+          \end{tcolorbox}
+          This moves the file \texttt{f1} into the directory \texttt{d1}.
+    \item \textbf{Move a directory into another directory:}
+          \begin{tcolorbox}
+              \texttt{\$ mkdir bigdir} \\
+              \texttt{\$ mv d1 bigdir}
+          \end{tcolorbox}
+          This moves the directory \texttt{d1} (and its contents) into \texttt{bigdir}.
+\end{itemize}
+
+\subsection{Using Relative Paths}
+You can use relative paths to move items around the filesystem.
+\begin{itemize}
+    \item \textbf{Moving a file up the directory tree:} If you are inside \texttt{/home/user/bigdir/d1}, you can move \texttt{f1} back to the home directory (\texttt{\textasciitilde}).
+          \begin{tcolorbox}
+              \texttt{\$ pwd} \\
+              \texttt{/home/user/bigdir/d1} \\
+              \texttt{\$ mv f1 ../..}
+          \end{tcolorbox}
+          The path \texttt{../..} refers to the parent of the parent directory, which is \texttt{/home/user}.
+    \item \textbf{Error case:} You cannot move the directory you are currently in.
+          \begin{tcolorbox}
+              \texttt{\$ pwd} \\
+              \texttt{/home/user/bigdir/d1} \\
+              \texttt{\$ mv . ../..} \\
+              \texttt{mv: cannot move '.' to '../../d1': Device or resource busy}
+          \end{tcolorbox}
+\end{itemize}
+
+\subsection{Renaming with mv}
+There is no dedicated "rename" command in Linux. The \texttt{mv} command is used for renaming. If the destination is a new name in the same directory, \texttt{mv} performs a rename.
+\begin{tcolorbox}
+    \texttt{\$ mv bigdir smalldir}
+\end{tcolorbox}
+This command renames the directory \texttt{bigdir} to \texttt{smalldir}.
+
+\subsection{Moving and Renaming Simultaneously}
+You can combine moving and renaming into a single command.
+\begin{itemize}
+    \item \textbf{Move and rename a file:} Move \texttt{f1} from \texttt{otherdir} to the home directory and rename it to \texttt{f2}.
+          \begin{tcolorbox}
+              \texttt{\$ mv otherdir/f1 \textasciitilde/f2}
+          \end{tcolorbox}
+    \item \textbf{Move and rename a directory:} Move \texttt{d1} from \texttt{smalldir} into \texttt{otherdir} and rename it to \texttt{d2}.
+          \begin{tcolorbox}
+              \texttt{\$ mv smalldir/d1 otherdir/d2}
+          \end{tcolorbox}
+\end{itemize}
+
+\subsection{The Dangers of Overwriting}
+The \texttt{mv} command can be dangerous because it will overwrite existing files without warning.
+\begin{itemize}
+    \item Consider two files, \texttt{f5} and \texttt{f6}, with different content.
+          \begin{tcolorbox}
+              \texttt{\$ echo "this is f5" > f5} \\
+              \texttt{\$ echo "this is f6" > f6}
+          \end{tcolorbox}
+    \item If you "rename" \texttt{f6} to \texttt{f5}, the original \texttt{f5} is permanently lost.
+          \begin{tcolorbox}
+              \texttt{\$ mv f6 f5} \\
+              \texttt{\$ cat f5} \\
+              \texttt{this is f6}
+          \end{tcolorbox}
+          \textbf{Warning:} The original content of \texttt{f5} has been overwritten and cannot be recovered.
+\end{itemize}
+
+\subsection{Safe Moving and Renaming}
+To prevent accidental overwriting, you can use options with the \texttt{mv} command. You can see these options with \texttt{mv --help}.
+\begin{itemize}
+    \item \textbf{Interactive Mode (\texttt{-i}):} This option prompts you for confirmation before overwriting a file.
+          \begin{tcolorbox}
+              \texttt{\$ mv -i f6 f5} \\
+              \texttt{mv: overwrite 'f5'? n}
+          \end{tcolorbox}
+          You can type \texttt{n} (for no) to cancel the operation and prevent data loss.
+    \item \textbf{No-Clobber Mode (\texttt{-n}):} This option prevents \texttt{mv} from overwriting any existing file. The move will simply not happen if the destination file exists.
+\end{itemize}
+\textbf{Best Practice:} Be very careful with \texttt{mv}. Using the \texttt{-i} option is a good habit to avoid losing data.
+
+\separator
+
 \end{document}
