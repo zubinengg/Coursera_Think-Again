@@ -712,4 +712,47 @@ The standard \texttt{rm} command does not delete directories. To do so, you must
           This command will automatically confirm and delete the \texttt{folder} directory and all its contents...
 \end{itemize}
 
+\separator
+
+\section{Unblock yourself in the command line}
+This section explains how to get back to the command prompt, even if you are stuck inside a program.
+
+\subsection{Basic Exit Strategies}
+There are several standard ways to exit a program or an input mode:
+\begin{itemize}
+    \item \textbf{Ctrl+C:} This is the most common way to interrupt and terminate a running program (e.g., the \texttt{rain} program). It works in most, but not all, cases.
+    \item \textbf{Program-Specific Commands:} Some programs have their own exit commands. For example, in \texttt{vim}, you must press \textbf{Esc} and then type \texttt{:q!} and press \textbf{Enter} to force quit. \textbf{Ctrl+C} will not work.
+    \item \textbf{Closing Input:} If you have an open single quote (\texttt{'}), double quote (\texttt{"}), or bracket, the shell will wait for you to close it. You must type the matching character to finish the input and return to the prompt.
+    \item \textbf{Ctrl+D (End of File):} This signal is used to indicate the end of input.
+          \begin{itemize}
+              \item It is used to exit from commands that read from standard input, such as \texttt{cat > file.txt}.
+              \item Sometimes it needs to be pressed on a new line, and occasionally it needs to be pressed twice.
+          \end{itemize}
+\end{itemize}
+
+\subsection{The Worst Case: Killing a Stuck Process}
+If a program is completely unresponsive and the basic methods fail, you can forcefully terminate it from a second terminal.
+
+\begin{enumerate}
+    \item \textbf{Open a Second Terminal:} In environments like WebLinux, there is often a button (e.g., an arrow) to open a new terminal session.
+    \item \textbf{Identify the Process with \texttt{htop}:} In the second terminal, run \texttt{htop}. This will show a list of all running processes for your user.
+    \item \textbf{Find the Process:} Locate the stuck program in the list (e.g., \texttt{rain}). Note its \textbf{PID} (Process Identifier), which is a unique number assigned to it.
+    \item \textbf{Send the Kill Signal:}
+          \begin{itemize}
+              \item Use the arrow keys to select the stuck process within \texttt{htop}.
+              \item Press the \textbf{F9} key to bring up the "send signal" menu.
+              \item Select signal \textbf{9 (SIGKILL)} from the list on the left. This is a non-ignorable signal that forcefully terminates the process.
+              \item Press \textbf{Enter} to send the signal.
+          \end{itemize}
+    \item \textbf{Verify Termination:} The process should disappear from the \texttt{htop} list. If you switch back to the first terminal, you will see a "Killed" message, and the prompt should return.
+\end{enumerate}
+
+\subsection{Recovering a Stuck Terminal (WebLinux)}
+Sometimes, even after killing a process, the original terminal can become unresponsive.
+\begin{itemize}
+    \item \textbf{The Bug:} In WebLinux, after killing a process from a second terminal, the prompt in the first terminal may return but not accept any input.
+    \item \textbf{Standard Linux Solution:} On a full Linux system, you would typically open another terminal and kill the stuck shell process itself. Reboots are rarely necessary.
+    \item \textbf{WebLinux Solution (The Last Resort):} If the terminal is completely stuck, the simplest way to "reboot" WebLinux is to \textbf{reload the browser page}. This will start a fresh Linux environment, but your files will be preserved.
+\end{itemize}
+
 \end{document}
