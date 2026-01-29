@@ -849,4 +849,126 @@ To prevent accidental overwriting, you can use options with the \texttt{mv} comm
 
 \separator
 
+\section{cp, cp -r}
+
+\subsection{Creating Files with cat (Recap)}
+\begin{itemize}
+    \item We can create a file using \texttt{cat} and redirection.
+    \item \texttt{cat > f1}: Enters input mode. Type content (e.g., "hello"), then press \textbf{Ctrl+D} to save and exit.
+    \item \texttt{cat f1}: Displays the content ("hello").
+\end{itemize}
+
+\subsection{Copying Files (cp)}
+\begin{itemize}
+    \item \texttt{cp f1 f2}: Copies content of \texttt{f1} to a new file \texttt{f2}.
+    \item \texttt{cat f2}: Confirms \texttt{f2} contains "hello".
+\end{itemize}
+
+\subsection{Copying via Redirection}
+\begin{itemize}
+    \item You can also copy by redirecting \texttt{cat} output.
+    \item \texttt{cat f2 > f3}: Reads \texttt{f2} and redirects output to \texttt{f3}.
+    \item This effectively copies \texttt{f2} to \texttt{f3}.
+\end{itemize}
+
+\subsection{Copying Directories (Recursive)}
+\begin{itemize}
+    \item \texttt{cp d1 d2}: Tries to copy directory \texttt{d1} to \texttt{d2}.
+    \item \textbf{Error:} "omitting directory d1".
+    \item \textbf{Solution:} Use the recursive option \texttt{-r}.
+    \item \texttt{cp -r d1 d2}: Successfully copies \texttt{d1} into \texttt{d2}.
+\end{itemize}
+
+\subsection{Recursive Copy Behavior}
+\begin{itemize}
+    \item If \texttt{d2} does not exist: \texttt{cp -r d1 d2} creates \texttt{d2} and copies contents of \texttt{d1} into it.
+    \item If \texttt{d2} exists: \texttt{cp -r d1 d2} copies \texttt{d1} \textit{inside} \texttt{d2}.
+    \item Doing it again will stick another copy or overwrite existing files inside the destination.
+\end{itemize}
+
+\subsection{Safety and Overwriting}
+\begin{itemize}
+    \item \texttt{cp} can overwrite text indiscriminately.
+    \item \texttt{cp --help}: Shows options.
+    \item \textbf{-i (Interactive)}: Prompts before overwriting.
+    \item \textbf{-f (Force)}: Forces overwrite (default behavior usually).
+    \item Example: \texttt{cp -ri d1 d2} -> Prompts "overwrite d2/d1/f1?". Answering "no" prevents accidental data loss.
+\end{itemize}
+
+\separator
+
+\section{Find locate}
+
+\subsection{The locate Command}
+In a real Linux environment, you would typically use the \texttt{locate} command to search for files.
+\begin{itemize}
+    \item It relies on a database of all files in the system.
+    \item You update this database with the \texttt{updatedb} command.
+    \item \textbf{Note:} On WebLinux, \texttt{locate} is not installed to keep the system light and fast.
+\end{itemize}
+
+\subsection{Simple Search with Wildcards}
+A simple way to find files in a specific directory is using the \texttt{echo} command with shell wildcards.
+\begin{itemize}
+    \item \textbf{Star (*):} Expands to any number of characters.
+          \begin{tcolorbox}
+              \texttt{\$ echo p*}
+          \end{tcolorbox}
+          This prints all files starting with 'p' (e.g., \texttt{program.c}).
+    \item \textbf{Question Mark (?):} Expands to exactly one character.
+          \begin{tcolorbox}
+              \texttt{\$ echo /usr/bin/a??}\\
+              \texttt{\$ echo /usr/bin/???}
+          \end{tcolorbox}
+          This lists files in \texttt{/usr/bin} with starting withg letter 'a' and two letters (e.g., \texttt{abc}, \texttt{add}, \texttt{adb}).\\
+          This lists files in \texttt{/usr/bin} with exactly three letters (e.g., \texttt{cal}, \texttt{man}, \texttt{vim}).
+\end{itemize}
+
+\subsection{The find Command}
+The \texttt{find} command searches for files within the directory hierarchy.
+
+\subsubsection{Basic Usage}
+\begin{itemize}
+    \item \texttt{find} or \texttt{find .}: Lists all files in the current directory recursively.
+    \item \texttt{find /}: Lists all files in the entire system (root).
+\end{itemize}
+
+\subsubsection{Searching by Name}
+Use \texttt{-name} to search for a specific filename.
+\begin{tcolorbox}
+    \texttt{\$ find . -name "program.c"}
+\end{tcolorbox}
+
+\subsubsection{Using Patterns}
+You can use patterns with wildcards. \textbf{Always use double quotes} around the pattern to prevent shell expansion.
+\begin{tcolorbox}
+    \texttt{\$ find . -name "prog*"}
+\end{tcolorbox}
+
+\subsubsection{Handling Errors (Redirecting to /dev/null)}
+Searching the whole system often results in "Permission denied" errors. You can redirect these error messages (stream 2) to \texttt{/dev/null} (the system's "black hole").
+\begin{tcolorbox}
+    \texttt{\$ find / -name "Hello" 2> /dev/null}
+\end{tcolorbox}
+
+\subsubsection{Advanced Search Options}
+\begin{itemize}
+    \item \textbf{Case Insensitive (-iname):} Ignores case distinctions.
+          \begin{tcolorbox}
+              \texttt{\$ find / -iname "*joe*" 2> /dev/null}
+          \end{tcolorbox}
+    \item \textbf{Searching Paths (-ipath):} Searches within the full path, not just the filename.
+          \begin{tcolorbox}
+              \texttt{\$ find / -ipath "*joe*" 2> /dev/null}
+          \end{tcolorbox}
+\end{itemize}
+
+\subsubsection{Piping to less}
+If the result list is long, pipe it to \texttt{less} to scroll through it.
+\begin{tcolorbox}
+    \texttt{\$ find / -ipath "*joe*" 2> /dev/null | less}
+\end{tcolorbox}
+
+\separator
+
 \end{document}
