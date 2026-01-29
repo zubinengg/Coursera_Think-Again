@@ -1,0 +1,68 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz}
+\usepackage{lmodern}
+\usepackage{hyperref}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{parskip}
+\usepackage{tabularx}
+\usepackage[utf8]{inputenc}
+\usepackage{tgpagella}
+\usepackage[T1]{fontenc}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{tcolorbox}
+\usepackage{enumitem}
+
+\newcommand{\separator}{\noindent\rule{\linewidth}{1pt}}
+
+\title{History of Linux and the command line}
+\author{Zubin}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+
+\separator
+%-----------------------------------------------------------------
+
+\section{Compiler vs interpreter}
+
+In the C programming language, we use a compiler. To understand the difference between an interpreter and a compiler, we can use an analogy of landing on a planet where inhabitants speak a strange language called "Gobbledygook". To get a mechanic to repair your spaceship, you need a translator.
+
+\subsection{The Interpreter}
+If you choose an interpreter:
+\begin{itemize}
+    \item \textbf{Process:} The interpreter reads your first instruction, translates it immediately, and the mechanic executes it. Then it reads the second, translates, and executes, and so on.
+    \item \textbf{Characteristics:} The interpreter stays with you, translating line by line.
+    \item \textbf{Pros:} It allows you to correct mistakes as you go (interactive).
+    \item \textbf{Cons:} It is a slow process because the mechanic waits for translation between steps.
+    \item \textbf{Etymology:} "Inter" means between. The interpreter is always between your program and the computer.
+\end{itemize}
+
+\subsection{The Compiler}
+If you choose a compiler:
+\begin{itemize}
+    \item \textbf{Process:} The compiler takes your complete list of instructions and translates the whole lot at once. It then hands the translated list back to you and leaves.
+    \item \textbf{Characteristics:} You hand the complete list to the mechanic, who executes them all in one go very quickly.
+    \item \textbf{Pros:} Execution is very fast and efficient.
+    \item \textbf{Cons:} Takes extra preparation time initially. If there is a mistake, it is too late to fix it during execution.
+    \item \textbf{Etymology:} "Compile" means to pile together. It piles together your entire program and translates it all at once.
+\end{itemize}
+
+\subsection{Summary}
+\begin{itemize}
+    \item \textbf{Interpreter:} Runs slowly, starts right away, allows you to see how things are going.
+    \item \textbf{Compiler:} Takes preparation time, but runs very quickly and efficiently.
+\end{itemize}
+
+\separator
+
+\end{document}
