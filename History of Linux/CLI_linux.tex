@@ -971,4 +971,48 @@ If the result list is long, pipe it to \texttt{less} to scroll through it.
 
 \separator
 
+\section{Use the math library}
+
+\subsection{Using the pow function}
+We can use the math library to perform calculations, such as finding the square of a number, instead of writing our own function. The \texttt{pow} function calculates a number raised to the power of another.
+\begin{itemize}
+    \item \textbf{Prototype:} Also known as the declaration, header, or signature. It defines the return type, function name, and parameter types.
+    \item \textbf{Example:} \texttt{double pow(double x, double y);}
+    \item \textbf{Usage:} \texttt{pow(a, 2)} calculates $a^2$.
+\end{itemize}
+To use this function, we need to link our program to the binary file containing its definition.
+
+\subsection{Locating the Library Binary}
+Compiled library files are typically stored in \texttt{/usr/lib}.
+\begin{itemize}
+    \item The math library is often named \texttt{libm.a} (archive) or \texttt{libm.so} (shared object).
+    \item \textbf{Linking with Absolute Path:} You can compile by specifying the full path to the library:
+          \begin{tcolorbox}
+              \texttt{gcc program.c /usr/lib/libm.a -o program}
+          \end{tcolorbox}
+\end{itemize}
+
+\subsection{Header Files}
+Header files, which contain function prototypes, are located in \texttt{/usr/include}.
+\begin{itemize}
+    \item The header for the math library is \texttt{math.h}.
+    \item \textbf{Including the Header:} Instead of typing the prototype manually, use the \texttt{\#include} directive at the top of your C file. This copies the content of the header file into your program.
+          \begin{tcolorbox}
+              \texttt{\#include <math.h>}
+          \end{tcolorbox}
+\end{itemize}
+
+\subsection{Linking with the -l Option}
+A more common and convenient way to link libraries is using the \texttt{-l} flag.
+\begin{itemize}
+    \item \textbf{Naming Convention:} To derive the flag, take the library name (e.g., \texttt{libm.a}), remove the \texttt{lib} prefix and the file extension.
+    \item \textbf{Example:} \texttt{libm.a} becomes \texttt{m}.
+    \item \textbf{Command:}
+          \begin{tcolorbox}
+              \texttt{gcc program.c -lm -o program}
+          \end{tcolorbox}
+\end{itemize}
+
+\separator
+
 \end{document}
