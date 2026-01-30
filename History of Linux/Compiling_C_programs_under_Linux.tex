@@ -142,4 +142,147 @@ Monitoring memory helps identify programs putting too much pressure on the syste
 
 \separator
 
+\section{Memory consumption of a program using htop, virtual memory}
+
+We can analyze how much memory a C program uses by running it and monitoring it with \texttt{htop}. To do this effectively, the program must pause (e.g., waiting for user input via \texttt{scanf}) so it stays active in memory.
+
+\subsection{Memory Usage by Data Type}
+By declaring arrays of different types with one million elements, we can observe how memory consumption changes in the \texttt{VIRT} (Virtual Memory) column of \texttt{htop}:
+\begin{itemize}
+    \item \textbf{Basic Program:} A simple program might use $\approx$ 952 KB.
+    \item \textbf{Char Array (1,000,000 chars):} Usage increases to $\approx$ 1,800 KB.
+    \item \textbf{Int Array (1,000,000 ints):} Usage increases significantly to $\approx$ 4,728 KB (approx. 4 MB).
+    \item \textbf{Double Array (1,000,000 doubles):} Usage doubles compared to integers, reaching $\approx$ 8,632 KB (approx. 8 MB).
+\end{itemize}
+
+\subsection{Virtual vs. Physical Memory}
+An important observation is that even when a program reserves a large amount of memory (high \texttt{VIRT}), the system's physical memory usage (the bar at the top of \texttt{htop}) may not increase correspondingly.
+\begin{itemize}
+    \item \textbf{Virtual Memory:} The amount of memory the program has asked for or reserved.
+    \item \textbf{Physical Memory:} The actual RAM hardware used.
+    \item \textbf{Lazy Allocation:} Linux is smart; if a program reserves memory (like a large array) but never writes to or reads from it, the system does not immediately allocate physical RAM. Physical memory is consumed only when the virtual memory is actually used.
+\end{itemize}
+
+\subsection{Memory Management Tips}
+\begin{itemize}
+    \item \textbf{Optimization:} Ensure that large arrays or variables are used efficiently.
+    \item \textbf{Dynamic Allocation:} If you allocate memory dynamically in C, always remember to \textbf{free} it to return it to the system for other programs.
+\end{itemize}
+
+\separator
+
+\section{Interactive programs in C using scanf, fflush}
+
+This section explains how to create interactive C programs and handle a common issue related to terminal output buffering.
+
+\subsection{Basic Interactive Program with scanf}
+An interactive program prompts the user for input and reads it from the terminal.
+\begin{itemize}
+    \item \textbf{Prompting:} Use \texttt{printf} to display a question to the user.
+    \item \textbf{Reading Input:} Use \texttt{scanf} to wait for and read the user's input.
+    \item \textbf{Example:} A program can ask for a family name, first name, and age.
+          \begin{itemize}
+              \item \texttt{scanf("\%s", familyName)} reads a string into a character array.
+              \item \texttt{scanf("\%d", \&age)} reads an integer into an integer variable.
+          \end{itemize}
+    \item Typically, each prompt with \texttt{printf} ends with a newline character (\texttt{\textbackslash n}) to move the cursor to the next line for the user's input.
+\end{itemize}
+
+\subsection{The Problem of Buffered Output}
+The \texttt{printf} function in C uses a buffer, which is a temporary memory area.
+\begin{itemize}
+    \item \textbf{Buffering:} Output is not always sent directly to the screen. It is first stored in a buffer. The buffer is "flushed" (its contents are sent to the terminal) when certain conditions are met.
+    \item \textbf{Newline Trigger:} A common trigger for flushing the buffer is encountering a newline character (\texttt{\textbackslash n}).
+    \item \textbf{The Issue:} If you write a \texttt{printf} statement for a prompt without a trailing \texttt{\textbackslash n}, the text may not appear on the screen immediately. The program might wait for the user's input with \texttt{scanf} before the prompt is even visible. All the buffered prompts might appear in a single line only after the program finishes or the buffer is flushed for another reason.
+\end{itemize}
+
+\subsection{The Solution: Flushing the Buffer with fflush}
+To ensure prompts appear immediately without a newline, you can manually flush the output buffer.
+\begin{itemize}
+    \item \textbf{The Command:} The \texttt{fflush(stdout)} function forces the standard output buffer (\texttt{stdout}) to be written to the screen.
+    \item \textbf{Implementation:} Place \texttt{fflush(stdout);} immediately after each \texttt{printf} statement that you want to appear on the screen right away.
+    \item \textbf{Example:}
+          \begin{tcolorbox}
+              \texttt{printf("What is your first name? ");} \\
+              \texttt{fflush(stdout);} \\
+              \texttt{scanf("\%s", firstName);}
+          \end{tcolorbox}
+    \item This ensures the question is visible before the program waits for the \texttt{scanf} input, even without a \texttt{\textbackslash n}. The user's answer will then appear on the same line as the question.
+\end{itemize}
+
+\subsection{Important Considerations}
+\begin{itemize}
+    \item \textbf{System Variability:} This buffering behavior is not consistent across all Linux systems. Some systems or C libraries might flush output more frequently, even without a newline.
+    \item \textbf{Best Practice:} To write portable and predictable interactive programs, always ensure the output buffer is flushed. The two main ways are:
+          \begin{enumerate}
+              \item End your prompt strings with \texttt{\textbackslash n}.
+              \item Call \texttt{fflush(stdout);} after the prompt.
+          \end{enumerate}
+\end{itemize}
+
+\separator
+
+\section{Use scanf and file redirection to simulate an input}
+
+We can automate or simulate user input for interactive programs using pipes and file redirection. This is useful for testing or when running programs in scripts.
+
+\subsection{Creating an Input File}
+First, create a file containing the inputs expected by the program, separated by newlines.
+\begin{itemize}
+    \item \textbf{Example:} Create a file named \texttt{answers} with the following content:
+          \begin{tcolorbox}
+              sharrock \\
+              remi \\
+              18
+          \end{tcolorbox}
+    \item You can create this using \texttt{nano} or \texttt{cat > answers}.
+\end{itemize}
+
+\subsection{Method 1: Using Pipes}
+You can pipe the output of a command (like \texttt{cat}) into your program.
+\begin{itemize}
+    \item \textbf{Command:} \texttt{cat answers | ./program}
+    \item \textbf{Explanation:} The shell takes the output of \texttt{cat answers} and feeds it as standard input to \texttt{./program}. The \texttt{scanf} functions in the program read from this stream just as if it were typed on the keyboard.
+\end{itemize}
+
+\subsection{Method 2: Input Redirection}
+You can redirect a file directly into the program's standard input using the less-than sign (\texttt{<}).
+\begin{itemize}
+    \item \textbf{Command:} \texttt{./program < answers}
+    \item \textbf{Explanation:} This tells the shell to open the file \texttt{answers} and connect it to the input of \texttt{./program}.
+    \item \textbf{Note:} This is the reverse of output redirection (\texttt{>}), which sends output to a file. Here, we send a file to the input.
+\end{itemize}
+
+\separator
+
+\section{Don’t use scanf, use fgets getline or readline}
+
+Using \texttt{scanf} for string input can be dangerous and lead to unexpected behavior for both programmers and users.
+
+\subsection{The Problem with scanf}
+\texttt{scanf} splits input based on whitespace (spaces, tabs, newlines).
+\begin{itemize}
+    \item \textbf{Scenario:} A program asks for Family Name, First Name, and Age sequentially.
+    \item \textbf{Input:} If the user types "Sharrock Remi 18" at the first prompt and hits Enter.
+    \item \textbf{Result:}
+          \begin{itemize}
+              \item Family Name becomes "Sharrock".
+              \item First Name automatically becomes "Remi" (consuming the next part of the buffer).
+              \item Age automatically becomes "18".
+          \end{itemize}
+    \item The program skips waiting for the subsequent inputs because \texttt{scanf} consumed the space-separated values from the first line. This behavior makes \texttt{scanf} risky for robust user interaction.
+\end{itemize}
+
+\subsection{Better Alternatives}
+To handle string input more safely, consider these functions:
+\begin{itemize}
+    \item \textbf{fgets:} Reads the entire line, including spaces. Note that it also captures the newline character (\texttt{\textbackslash n}) at the end, which you may need to remove.
+    \item \textbf{getline:} A POSIX-standard function (available on most Unix-like systems) that reads an entire line.
+    \item \textbf{GNU readline:} A powerful function specific to Linux/GNU systems.
+\end{itemize}
+
+For robust C programming, it is recommended to research these functions or take a dedicated C programming course.
+
+\separator
+
 \end{document}
