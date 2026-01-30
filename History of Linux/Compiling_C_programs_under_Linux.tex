@@ -65,4 +65,81 @@ If you choose a compiler:
 
 \separator
 
+\section{Memory representation:\\ RAM, cells, word, byte, bit, memory address}
+
+How does the computer remember where it has stored the value for a certain variable? To answer this, we need to understand computer memory.
+
+\subsection{Types of Memory}
+One role of the operating system is to manage the computer's memory.
+\begin{itemize}
+    \item \textbf{RAM (Random Access Memory):} Temporary, volatile memory used to execute programs. It is quick to access.
+    \item \textbf{Non-volatile Memory:} Permanent storage, such as the hard drive, used for storing files.
+\end{itemize}
+
+\subsection{Structure of RAM}
+Most programs use RAM during execution.
+\begin{itemize}
+    \item \textbf{Bit:} A single binary memory cell (0 or 1).
+    \item \textbf{Word:} A group of bits forming the fundamental unit of data moved between RAM and the processor.
+    \item \textbf{Word Size:} The number of bits in a word (e.g., 8, 16, 32, 64 bits).
+    \item \textbf{Byte:} A unit consisting of 8 bits.
+\end{itemize}
+
+\subsection{Memory Addressing}
+To locate data, memory cells are grouped into words, and each word is assigned an address.
+\begin{itemize}
+    \item \textbf{Memory Address:} A whole number describing the location of a word in memory (similar to house addresses on a street).
+    \item \textbf{Example:} If a computer has 8-bit words:
+          \begin{itemize}
+              \item Address 0 points to the first word (first 8 bits).
+              \item Address 1 points to the second word (next 8 bits).
+          \end{itemize}
+\end{itemize}
+
+\subsection{Memory and C Programming}
+In C, it is possible to access these memory addresses directly.
+\begin{itemize}
+    \item \textbf{Access:} You can obtain the address where a variable's value is stored.
+    \item \textbf{Optimization:} This allows for low-level memory management and optimization of execution speed.
+\end{itemize}
+
+\separator
+
+\section{Manage the memory with the command line:\\ free, top, htop}
+
+To manage memory, we first need to see how much memory is used by the programs running on the Linux system.
+
+\subsection{The free Command}
+The \texttt{free} command displays the amount of free and used system memory.
+\begin{itemize}
+    \item \textbf{Options:} Use \texttt{-b} (bytes), \texttt{-k} (kilobytes), \texttt{-m} (megabytes), or \texttt{-g} (gigabytes) to set the unit.
+    \item \textbf{Example:} \texttt{free -m} displays the table in megabytes.
+    \item \textbf{Output:} The \texttt{Mem} line shows the total, used, and free memory.
+\end{itemize}
+
+\subsection{The top Command}
+The \texttt{top} command shows memory usage per process.
+\begin{itemize}
+    \item \textbf{Statistics:} The header shows total used and free memory.
+    \item \textbf{VSZ (Virtual Size):} Represents the virtual memory for each program (sometimes labeled \textbf{VIRT}).
+    \item \textbf{Sorting:} Press the \textbf{M} key to sort processes by memory usage.
+    \item \textbf{Visualization:} Pressing the \textbf{S} key (in this specific version) switches to a view showing only memory usage.
+\end{itemize}
+
+\subsection{The htop Command}
+\texttt{htop} provides a visual representation of system resources.
+\begin{itemize}
+    \item \textbf{Visuals:} Bars indicate used and free memory.
+    \item \textbf{Sorting:}
+          \begin{enumerate}
+              \item Press \textbf{F6} to select "Sort by".
+              \item Select \textbf{M\_SIZE} (Memory Size) and press \textbf{Enter}.
+              \item This sorts the list by the \textbf{VIRT} column.
+          \end{enumerate}
+\end{itemize}
+
+Monitoring memory helps identify programs putting too much pressure on the system, which can then be killed if necessary.
+
+\separator
+
 \end{document}
