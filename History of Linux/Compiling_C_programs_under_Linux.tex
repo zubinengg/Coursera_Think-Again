@@ -285,4 +285,50 @@ For robust C programming, it is recommended to research these functions or take 
 
 \separator
 
+\section{Use multiple libraries in C}
+
+We will now look at a program that uses several external libraries. This requires including header files (definitions and prototypes) and linking object files (compiled code).
+
+\subsection{Locating Headers and Libraries}
+To find the necessary files on the system:
+\begin{itemize}
+    \item \textbf{Header Files:} Located in \texttt{/usr/include}. We can list them to a file: \texttt{ls /usr/include > headers.txt}.
+          \begin{itemize}
+              \item \texttt{curses.h}: Allows cursor manipulation and colors.
+              \item \texttt{menu.h}: Allows creation of menus.
+          \end{itemize}
+    \item \textbf{Object Files:} Located in \texttt{/usr/lib}. We can list them: \texttt{ls /usr/lib > libraries.txt}.
+          \begin{itemize}
+              \item \texttt{libcurses.so}: The compiled code for curses.
+              \item \texttt{libmenu.so}: The compiled code for menus.
+          \end{itemize}
+\end{itemize}
+
+\subsection{Including Headers}
+In the C program, we must include the headers for the functions we are using:
+\begin{tcolorbox}
+    \texttt{\#include <curses.h>} \\
+    \texttt{\#include <menu.h>} \\
+    \texttt{\#include <stdlib.h>}
+\end{tcolorbox}
+Note: \texttt{stdlib.h} is included because the program uses \texttt{calloc} for memory allocation.
+
+\subsection{Linking Libraries}
+To include the actual code for the functions, we must link the libraries during the build process.
+
+\subsubsection{Method 1: Absolute Path}
+Add the exact path to the library on the build line:
+\begin{tcolorbox}
+    \texttt{gcc program.c /usr/lib/libcurses.so /usr/lib/libmenu.so -o program}
+\end{tcolorbox}
+The standard library (\texttt{stdlib}) is automatically linked, so it does not need to be added here.
+
+\subsubsection{Method 2: Using the -l Flag}
+A more convenient way is to use the \texttt{-l} flag followed by the library name (without "lib" or extension):
+\begin{tcolorbox}
+    \texttt{gcc program.c -lcurses -lmenu -o program}
+\end{tcolorbox}
+
+\separator
+
 \end{document}
