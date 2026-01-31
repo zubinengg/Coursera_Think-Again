@@ -461,4 +461,76 @@ This creates the final executable \texttt{program} by combining the machine lang
 
 \separator
 
+\section{Modify object files}
+
+To reinforce what we have learned so far about spreading source code over multiple files, compiling, and linking, we will walk through the steps required to modify this code. You will see that these steps can become tedious, which motivates the use of \textbf{Makefiles} (covered in the next topic) to automate the process.
+
+Suppose we want to add a maximum temperature feature to our \texttt{weatherstats} source file and call it from the main program.
+
+\subsection{Modifying the Source Code}
+
+\subsubsection{Updating the Main Program}
+In \texttt{program.c}, we add a call to the new function and print the result.
+\begin{tcolorbox}
+    \texttt{double max = maxTemp(temperatures, 7);} \\
+    \texttt{printf("Highest temp: \%.2lf\textbackslash n", max);}
+\end{tcolorbox}
+
+\subsubsection{Updating the Module}
+We add the \texttt{maxTemp} function to \texttt{weatherstats.c}.
+\begin{tcolorbox}
+    \texttt{double maxTemp(double *temperatures, int size) \{} \\
+    \texttt{    double max = temperatures[0];} \\
+    \texttt{    int i;} \\
+    \texttt{    for (i = 1; i < size; i++) \{} \\
+    \texttt{        if (max < temperatures[i]) \{} \\
+    \texttt{            max = temperatures[i];} \\
+    \texttt{        \}} \\
+    \texttt{    \}} \\
+    \texttt{    return max;} \\
+    \texttt{\}}
+\end{tcolorbox}
+
+\subsubsection{Updating the Header}
+We must add the function prototype to \texttt{weatherstats.h} so the compiler knows about it when compiling \texttt{program.c}.
+\begin{tcolorbox}
+    \texttt{double maxTemp(double *temperatures, int size);}
+\end{tcolorbox}
+
+\subsection{Compiling and Linking}
+Now we must translate the code into machine language.
+
+\begin{enumerate}
+    \item \textbf{Compile program.c:}
+          \begin{tcolorbox}
+              \texttt{gcc -Wall -c program.c -o program.o}
+          \end{tcolorbox}
+    \item \textbf{Compile weatherstats.c:}
+          \begin{tcolorbox}
+              \texttt{gcc -Wall -c weatherstats.c -o weatherstats.o}
+          \end{tcolorbox}
+    \item \textbf{Link them together:}
+          \begin{tcolorbox}
+              \texttt{gcc -o program program.o weatherstats.o}
+          \end{tcolorbox}
+\end{enumerate}
+Running \texttt{./program} will now display both the average and the maximum temperature.
+
+\subsection{Partial Recompilation}
+If we modify only one file, we do not need to recompile everything. For example, if we change a temperature value (e.g., changing 5.3 to 15.3) in \texttt{program.c}:
+\begin{enumerate}
+    \item \textbf{Recompile only the changed file:}
+          \begin{tcolorbox}
+              \texttt{gcc -Wall -c program.c -o program.o}
+          \end{tcolorbox}
+          We do not need to recompile \texttt{weatherstats.c} since it hasn't changed.
+    \item \textbf{Relink:}
+          \begin{tcolorbox}
+              \texttt{gcc -o program program.o weatherstats.o}
+          \end{tcolorbox}
+\end{enumerate}
+When we run the program now, we get the updated result. As you can see, making modifications to source code spread out over multiple files can be rather tedious, which is why we will look at Makefiles next.
+
+\separator
+
 \end{document}
