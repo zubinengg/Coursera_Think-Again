@@ -533,4 +533,64 @@ When we run the program now, we get the updated result. As you can see, making m
 
 \separator
 
+\section{Make file}
+
+We will now see how to automate all of the necessary steps to build the final executable program from source code spread out over multiple files. We will use the \texttt{make} program, which reads instructions from a file named \texttt{Makefile}.
+
+\subsection{The Makefile Structure}
+To use \texttt{make}, we create a file named \texttt{Makefile}. The structure of the rules in this file is specific:
+\begin{tcolorbox}
+    \texttt{target: dependencies} \\
+    \texttt{\hspace*{1cm} command}
+\end{tcolorbox}
+\textbf{Note:} The indentation before the command must be a \textbf{tab} character, not spaces.
+
+\begin{itemize}
+    \item \textbf{Target:} What is to be produced.
+    \item \textbf{Dependencies:} What is needed to produce the target.
+    \item \textbf{Command:} How to produce the target.
+\end{itemize}
+
+\subsection{Constructing the Makefile}
+We define the targets for our weather statistics program.
+
+\subsubsection{The Executable}
+The final target is the executable \texttt{program}. It depends on the object files.
+\begin{tcolorbox}
+    \texttt{program: program.o weatherstats.o} \\
+    \texttt{\hspace*{1cm} gcc -std=C11 -Wall -fmax-errors=10 -Wextra -o program program.o weatherstats.o}
+\end{tcolorbox}
+
+\subsubsection{The Object Files}
+We also need to tell \texttt{make} how to build the object files.
+\begin{itemize}
+    \item \textbf{program.o:} Depends on \texttt{program.c} and \texttt{weatherstats.h}.
+          \begin{tcolorbox}
+              \texttt{program.o: program.c weatherstats.h} \\
+              \texttt{\hspace*{1cm} gcc -std=C11 -Wall -fmax-errors=10 -Wextra -c program.c -o program.o}
+          \end{tcolorbox}
+    \item \textbf{weatherstats.o:} Depends on \texttt{weatherstats.c}.
+          \begin{tcolorbox}
+              \texttt{weatherstats.o: weatherstats.c} \\
+              \texttt{\hspace*{1cm} gcc -std=C11 -Wall -fmax-errors=10 -Wextra -c weatherstats.c -o weatherstats.o}
+          \end{tcolorbox}
+\end{itemize}
+
+\subsection{Running Make}
+To build the program, simply type \texttt{make} in the terminal.
+\begin{tcolorbox}
+    \texttt{\$ make}
+\end{tcolorbox}
+This will execute the necessary commands to build the targets.
+
+\subsection{Efficiency}
+The \texttt{make} program is smart and only recompiles what is necessary.
+\begin{itemize}
+    \item If you modify \texttt{program.c} but not \texttt{weatherstats.c}, running \texttt{make} will only recompile \texttt{program.o} and then link the program. It will not recompile \texttt{weatherstats.o}.
+    \item If you run \texttt{make} when everything is up to date, it will do nothing.
+\end{itemize}
+This automation simplifies the build process significantly.
+
+\separator
+
 \end{document}
