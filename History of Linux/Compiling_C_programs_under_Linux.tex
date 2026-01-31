@@ -593,4 +593,64 @@ This automation simplifies the build process significantly.
 
 \separator
 
+\section{More elaborate Makefile}
+
+I want to quickly show you an alternative \texttt{Makefile}, one that is more versatile towards making changes and can be more broadly used for other purposes. This is an optional extra topic, but if you look on the internet for Makefiles, you will most likely see something that is more like the one shown here.
+
+\subsection{Variables and Comments}
+In this Makefile, we use variables to define settings at the top of the file. This makes it easy to change compilers, flags, or file names without modifying the logic below.
+\begin{itemize}
+    \item \textbf{Comments:} Anything starting with a pound sign (\texttt{\#}) is a comment.
+    \item \textbf{CC:} Defines the compiler (e.g., \texttt{gcc}).
+    \item \textbf{CFLAGS:} Defines the compiler flags.
+    \item \textbf{OBJ:} Lists the object files needed for the project.
+    \item \textbf{MAIN:} Defines the name of the final executable.
+\end{itemize}
+
+\subsection{Generic Rules}
+The targets use these variables.
+\begin{itemize}
+    \item \textbf{all:} The default target, which depends on the executable variable \texttt{\$(MAIN)}.
+    \item \textbf{\$(MAIN):} Depends on the object files \texttt{\$(OBJ)}. It uses the variables to construct the link command.
+    \item \textbf{\%.o: \%.c:} A generic rule to compile any \texttt{.c} file into a \texttt{.o} file.
+          \begin{itemize}
+              \item \texttt{\$<}: Refers to the source file (the dependency).
+              \item \texttt{\$@}: Refers to the output file (the target).
+          \end{itemize}
+\end{itemize}
+
+\subsection{The Clean Target}
+A \texttt{clean} target is added to remove object files and the executable, allowing for a fresh build.
+
+\subsection{Example Code}
+Here is the complete elaborate \texttt{Makefile}:
+
+\begin{tcolorbox}
+    \texttt{\# Define the compiler} \\
+    \texttt{CC = gcc} \\
+    \texttt{\# Define compiler flags} \\
+    \texttt{CFLAGS = -std=c11 -Wall -fmax-errors=10 -Wextra} \\
+    \texttt{} \\
+    \texttt{\# Define object files} \\
+    \texttt{OBJ = program.o weatherstats.o} \\
+    \texttt{\# Define the executable name} \\
+    \texttt{MAIN = program} \\
+    \texttt{} \\
+    \texttt{all: \$(MAIN)} \\
+    \texttt{} \\
+    \texttt{\$(MAIN): \$(OBJ)} \\
+    \texttt{\hspace*{1cm} \$(CC) \$(CFLAGS) -o \$(MAIN) \$(OBJ)} \\
+    \texttt{} \\
+    \texttt{\# Generic rule for compiling .c to .o} \\
+    \texttt{\%.o: \%.c} \\
+    \texttt{\hspace*{1cm} \$(CC) \$(CFLAGS) -c \$< -o \$@} \\
+    \texttt{} \\
+    \texttt{clean:} \\
+    \texttt{\hspace*{1cm} rm *.o \$(MAIN)}
+\end{tcolorbox}
+
+Running \texttt{make} will execute the steps defined by these generic rules. Running \texttt{make clean} will remove the generated files.
+
+\separator
+
 \end{document}
