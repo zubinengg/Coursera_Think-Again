@@ -419,5 +419,46 @@ Understanding these steps is essential for separate compilation, where source co
 
 \separator
 
+\section{Object files}
+
+In this section, we demonstrate \textbf{separate compilation}, which means spreading source code over several files and assembling them into one final executable. This is essential for organizing large programs by topic.
+
+\subsection{Creating Separate Files}
+We separate the \texttt{average\_temperature} function from the main program into its own file.
+\begin{itemize}
+    \item \textbf{weatherstats.c}: Contains the source code for the \texttt{average\_temperature} function.
+    \item \textbf{weatherstats.h}: A header file containing the function prototype.
+    \item \textbf{program.c}: Contains the \texttt{main} function.
+\end{itemize}
+
+To use the function in \texttt{program.c}, we must include the header.
+\begin{tcolorbox}
+    \texttt{\#include "weatherstats.h"}
+\end{tcolorbox}
+\textbf{Note:} We use quotation marks (\texttt{""}) instead of angle brackets (\texttt{<>}). Angle brackets tell the compiler to look in standard system paths (like \texttt{/usr/include}), whereas quotation marks tell it to look in the current directory.
+
+\subsection{Compiling Object Files}
+We compile each source file into an object file (\texttt{.o}) individually.
+
+\subsubsection{Compiling the Module}
+\begin{tcolorbox}
+    \texttt{gcc -c weatherstats.c -o weatherstats.o}
+\end{tcolorbox}
+We must use the \texttt{-c} flag. If omitted, GCC tries to build an executable and fails because \texttt{weatherstats.c} has no \texttt{main} function.
+
+\subsubsection{Compiling the Main Program}
+\begin{tcolorbox}
+    \texttt{gcc -Wall -c program.c -o program.o}
+\end{tcolorbox}
+Using \texttt{-Wall} ensures we see warnings, such as "implicitly declared function" if we forget to include the header file.
+
+\subsection{Linking}
+Finally, we invoke the linker to bundle the object files into an executable.
+\begin{tcolorbox}
+    \texttt{gcc -o program program.o weatherstats.o}
+\end{tcolorbox}
+This creates the final executable \texttt{program} by combining the machine language from both object files.
+
+\separator
 
 \end{document}
