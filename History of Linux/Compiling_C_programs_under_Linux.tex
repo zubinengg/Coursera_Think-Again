@@ -1147,46 +1147,176 @@ You can also read doubles. Create a file \texttt{my\_second\_file.txt} with doub
     \item Change the format specifier in \texttt{fscanf} and \texttt{printf} to \texttt{\%lf}.
 \end{itemize}
 
-\end{document}
+\separator
 
-\subsection{Example Program: Reading Integers}
-Here is a program that reads the count of numbers and then loops to read the rest.
+\section{Read until the end of the file}
+
+In this section, we will learn how to read from a file when we do not know beforehand how many numbers are stored in it. In the previous example, the first number in the file indicated the count, but often we want to simply read until the end of the file.
+
+\subsection{Creating the Data File}
+We want to create a new file named \texttt{my\_third\_file.txt} that contains numbers without an initial count.
+\begin{tcolorbox}
+    \texttt{touch my\_third\_file.txt}
+\end{tcolorbox}
+Edit this file and paste in some numbers (e.g., 56, 3, ...) without the leading count.
+
+\subsection{Using a while Loop}
+Since we do not know the number of iterations required, a \texttt{for} loop is not suitable. A \texttt{while} loop is better suited for this task.
+
+\subsubsection{Checking for EOF}
+The \texttt{fscanf} function returns a value indicating the number of items successfully read. If it reaches the end of the file, it returns the constant \texttt{EOF} (End Of File), which is defined in \texttt{stdio.h}.
+
+We can use a variable \texttt{message} to store this return value and a flag \texttt{done} to control the loop.
+\begin{tcolorbox}
+    \texttt{int done = 0;} \\
+    \texttt{int message;} \\
+    \texttt{while (!done) \{} \\
+    \texttt{\hspace*{0.5cm} message = fscanf(ifile, "\%d", \&num);} \\
+    \texttt{\hspace*{0.5cm} if (message == EOF) \{} \\
+    \texttt{\hspace*{1cm} done = 1;} \\
+    \texttt{\hspace*{0.5cm} \} else \{} \\
+    \texttt{\hspace*{1cm} printf("I read \%d from file\textbackslash n", num);} \\
+    \texttt{\hspace*{1cm} N++;} \\
+    \texttt{\hspace*{1cm} sum += num;} \\
+    \texttt{\hspace*{0.5cm} \}} \\
+    \texttt{\}}
+\end{tcolorbox}
+
+\subsection{Calculating the Average}
+To calculate the average, we sum the numbers and divide by the count \texttt{N}.
+\begin{itemize}
+    \item \textbf{Integer Division:} If you divide two integers (e.g., \texttt{sum / N}), C performs integer division, resulting in an integer.
+    \item \textbf{Casting:} To get a precise floating-point result, you must cast one of the operands to \texttt{double}.
+          \begin{tcolorbox}
+              \texttt{printf("The average is \%.2lf\textbackslash n", (double)sum / N);}
+          \end{tcolorbox}
+\end{itemize}
+
+\subsection{Optimized Loop Syntax}
+We can combine the reading and the EOF check into the \texttt{while} condition. This is a common and concise idiom in C.
+\begin{tcolorbox}
+    \texttt{while (fscanf(ifile, "\%d", \&num) != EOF) \{} \\
+    \texttt{\hspace*{0.5cm} printf("I read \%d from the file\textbackslash n", num);} \\
+    \texttt{\hspace*{0.5cm} N++;} \\
+    \texttt{\hspace*{0.5cm} sum += num;} \\
+    \texttt{\}}
+\end{tcolorbox}
+\textbf{Note:} When using this method, do not place a second \texttt{fscanf} inside the loop body, as the reading happens in the condition.
+
+\separator
+
+\section{Write numbers to a file using fprintf()}
+
+Now that you know how to read input from files, it is easy to learn how to write output to files. Suppose we wanted the user to enter student grades from the keyboard and then store these grades in a file.
+
+\subsection{Opening a File for Writing}
+To write to a file, we declare a file pointer (e.g., \texttt{ofile} for output file) and use \texttt{fopen} with the \texttt{"w"} mode.
+\begin{itemize}
+    \item \textbf{Mode "w":} Tells the computer we want to write to the file.
+    \item \textbf{Overwriting:} If the file already exists, opening it with \texttt{"w"} will overwrite it, and you will lose any previous content. If it does not exist, it will be created.
+\end{itemize}
+
+\subsection{Writing with fprintf}
+The \texttt{fprintf} command works just like \texttt{printf}, except we also pass in the file pointer.
+\begin{itemize}
+    \item \textbf{Syntax:} \texttt{fprintf(file\_pointer, "format", variables);}
+    \item \textbf{Example:} \texttt{fprintf(ofile, "\%d ", number);}
+\end{itemize}
+
+\subsection{Formatting Output}
+It is important to include separators (like spaces or newlines) in the format string.
+\begin{itemize}
+    \item \textbf{The Problem:} If you write numbers without spaces (e.g., 100, 99), they will be "smushed" together in the file (e.g., "10099"), making them impossible to distinguish when reading back.
+    \item \textbf{The Solution:} Add a space in the format string: \texttt{"\%d "}.
+\end{itemize}
+
+\subsection{Example Program}
+This program asks the user to enter grades and writes them to a file. It uses a \texttt{do-while} loop and stops when the user enters -1. It also demonstrates using a variable for the filename.
+
 \begin{tcolorbox}
     \texttt{\#include <stdio.h>} \\
     \texttt{} \\
     \texttt{int main(void) \{} \\
-    \texttt{    FILE *ifile;} \\
-    \texttt{    int N, i, number;} \\
-    \texttt{\hspace*{0.5cm} FILE *ifile;} \\
-    \texttt{\hspace*{0.5cm} int N, i, number;} \\
+    \texttt{\hspace*{0.5cm} FILE *ofile;} \\
+    \texttt{\hspace*{0.5cm} char filename[] = "my\_first\_output\_file.txt";} \\
+    \texttt{\hspace*{0.5cm} int num;} \\
     \texttt{} \\
-    \texttt{    ifile = fopen("my\_first\_file.txt", "r");} \\
-    \texttt{    fscanf(ifile, "\%d", \&N);} \\
-    \texttt{    printf("There are \%d numbers in the file.\textbackslash n", N);} \\
-    \texttt{\hspace*{0.5cm} ifile = fopen("my\_first\_file.txt", "r");} \\
-    \texttt{\hspace*{0.5cm} fscanf(ifile, "\%d", \&N);} \\
-    \texttt{\hspace*{0.5cm} printf("There are \%d numbers in the file.\textbackslash n", N);} \\
+    \texttt{\hspace*{0.5cm} ofile = fopen(filename, "w");} \\
     \texttt{} \\
-    \texttt{    for (i = 0; i < N; i++) \{} \\
-    \texttt{        fscanf(ifile, "\%d", \&number);} \\
-    \texttt{        printf("I read \%d from the file.\textbackslash n", number);} \\
-    \texttt{    \}} \\
-    \texttt{\hspace*{0.5cm} for (i = 0; i < N; i++) \{} \\
-    \texttt{\hspace*{1cm} fscanf(ifile, "\%d", \&number);} \\
-    \texttt{\hspace*{1cm} printf("I read \%d from the file.\textbackslash n", number);} \\
-    \texttt{\hspace*{0.5cm} \}} \\
+    \texttt{\hspace*{0.5cm} do \{} \\
+    \texttt{\hspace*{1cm} printf("Please enter a grade. Enter -1 to quit: \textbackslash n");} \\
+    \texttt{\hspace*{1cm} scanf("\%d", \&num);} \\
+    \texttt{\hspace*{1cm} if (num != -1) \{} \\
+    \texttt{\hspace*{1.5cm} fprintf(ofile, "\%d ", num);} \\
+    \texttt{\hspace*{1cm} \}} \\
+    \texttt{\hspace*{0.5cm} \} while (num != -1);} \\
     \texttt{} \\
-    \texttt{    fclose(ifile);} \\
-    \texttt{\hspace*{0.5cm} fclose(ifile);} \\
-    \texttt{    return 0;} \\
+    \texttt{\hspace*{0.5cm} fclose(ofile);} \\
+    \texttt{\hspace*{0.5cm} return 0;} \\
     \texttt{\}}
 \end{tcolorbox}
 
-\subsection{Example Program: Reading Doubles}
-You can also read doubles. Create a file \texttt{my\_second\_file.txt} with doubles (e.g., \texttt{4.5 6.2 ...}).
+\separator
+
+\section{Append numbers to a file at the end}
+
+In the previous example, we opened the file using the \texttt{"w"} mode. This mode creates a new file if it does not exist, but if the file already exists, it overwrites it, destroying previous data.
+
+\subsection{The Append Mode ("a")}
+To add data to the end of an existing file without losing the current content, we use the \texttt{"a"} (append) mode.
 \begin{itemize}
-    \item Change the variable type to \texttt{double}.
-    \item Change the format specifier in \texttt{fscanf} and \texttt{printf} to \texttt{\%lf}.
+    \item \textbf{Behavior:} If the file exists, new data is added to the end. If the file does not exist, a new one is created (just like \texttt{"w"}).
+    \item \textbf{Syntax:} \texttt{ofile = fopen(filename, "a");}
 \end{itemize}
+
+\subsection{Checking if a File Exists}
+Sometimes you want to give the user a choice: append to the existing file or overwrite it. To do this, you first need to check if the file exists.
+\begin{itemize}
+    \item \textbf{The Trick:} Try to open the file for reading (\texttt{"r"}).
+    \item \textbf{Result:}
+          \begin{itemize}
+              \item If \texttt{fopen} returns \texttt{NULL}, the file does not exist.
+              \item If it returns a valid pointer, the file exists.
+          \end{itemize}
+    \item \textbf{Important:} If the file exists, close it immediately after the check before reopening it in the desired mode.
+\end{itemize}
+
+\subsection{Example Program: Smart File Handling}
+This program checks if the file exists. If it does, it asks the user whether to append or overwrite.
+
+\begin{tcolorbox}
+    \texttt{\#include <stdio.h>} \\
+    \texttt{} \\
+    \texttt{int main(void) \{} \\
+    \texttt{\hspace*{0.5cm} FILE *ofile;} \\
+    \texttt{\hspace*{0.5cm} char filename[] = "my\_first\_output\_file.txt";} \\
+    \texttt{\hspace*{0.5cm} int num;} \\
+    \texttt{\hspace*{0.5cm} int selection = 1;} \\
+    \texttt{} \\
+    \texttt{\hspace*{0.5cm} // Check if file exists} \\
+    \texttt{\hspace*{0.5cm} ofile = fopen(filename, "r");} \\
+    \texttt{\hspace*{0.5cm} if (ofile != NULL) \{} \\
+    \texttt{\hspace*{1cm} printf("You already have a file named \%s\textbackslash n", filename);} \\
+    \texttt{\hspace*{1cm} fclose(ofile);} \\
+    \texttt{\hspace*{1cm} printf("Do you wish to (1) append or (2) overwrite? Enter 1 or 2: ");} \\
+    \texttt{\hspace*{1cm} scanf("\%d", \&selection);} \\
+    \texttt{\hspace*{0.5cm} \}} \\
+    \texttt{} \\
+    \texttt{\hspace*{0.5cm} if (selection == 1) \{} \\
+    \texttt{\hspace*{1cm} ofile = fopen(filename, "a");} \\
+    \texttt{\hspace*{0.5cm} \} else \{} \\
+    \texttt{\hspace*{1cm} ofile = fopen(filename, "w");} \\
+    \texttt{\hspace*{0.5cm} \}} \\
+    \texttt{} \\
+    \texttt{\hspace*{0.5cm} do \{} \\
+    \texttt{\hspace*{1cm} printf("Enter a grade (-1 to quit): ");} \\
+    \texttt{\hspace*{1cm} scanf("\%d", \&num);} \\
+    \texttt{\hspace*{1cm} if (num != -1) fprintf(ofile, "\%d ", num);} \\
+    \texttt{\hspace*{0.5cm} \} while (num != -1);} \\
+    \texttt{} \\
+    \texttt{\hspace*{0.5cm} fclose(ofile);} \\
+    \texttt{\hspace*{0.5cm} return 0;} \\
+    \texttt{\}}
+\end{tcolorbox}
 
 \end{document}
