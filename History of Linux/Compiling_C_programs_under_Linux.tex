@@ -485,14 +485,14 @@ In \texttt{program.c}, we add a call to the new function and print the result.
 We add the \texttt{maxTemp} function to \texttt{weatherstats.c}.
 \begin{tcolorbox}
     \texttt{double maxTemp(double *temperatures, int size) \{} \\
-    \texttt{    double max = temperatures[0];} \\
-    \texttt{    int i;} \\
-    \texttt{    for (i = 1; i < size; i++) \{} \\
-    \texttt{        if (max < temperatures[i]) \{} \\
-    \texttt{            max = temperatures[i];} \\
-    \texttt{        \}} \\
-    \texttt{    \}} \\
-    \texttt{    return max;} \\
+    \texttt{\hspace*{0.5cm} double max = temperatures[0];} \\
+    \texttt{\hspace*{0.5cm} int i;} \\
+    \texttt{\hspace*{0.5cm} for (i = 1; i < size; i++) \{} \\
+    \texttt{\hspace*{1cm} if (max < temperatures[i]) \{} \\
+    \texttt{\hspace*{1.5cm} max = temperatures[i];} \\
+    \texttt{\hspace*{1cm} \}} \\
+    \texttt{\hspace*{0.5cm} \}} \\
+    \texttt{\hspace*{0.5cm} return max;} \\
     \texttt{\}}
 \end{tcolorbox}
 
@@ -871,11 +871,11 @@ We want to add a function that prints out temperatures. We create a new source f
     \texttt{\#include <stdio.h>} \\
     \texttt{} \\
     \texttt{void printTemps(double *temperatures, int size) \{} \\
-    \texttt{    printf("Over the past \%d days the temperatures were:\textbackslash n", size);} \\
-    \texttt{    int i;} \\
-    \texttt{    for (i = 0; i < size; i++) \{} \\
-    \texttt{        printf("On day \%d the temperature was \%.2lf\textbackslash n", i + 1, temperatures[i]);} \\
-    \texttt{    \}} \\
+    \texttt{\hspace*{0.5cm} printf("Over the past \%d days the temperatures were:\textbackslash n", size);} \\
+    \texttt{\hspace*{0.5cm} int i;} \\
+    \texttt{\hspace*{0.5cm} for (i = 0; i < size; i++) \{} \\
+    \texttt{\hspace*{1cm} printf("On day \%d the temperature was \%.2lf\textbackslash n", i + 1, temperatures[i]);} \\
+    \texttt{\hspace*{0.5cm} \}} \\
     \texttt{\}}
 \end{tcolorbox}
 
@@ -1004,11 +1004,11 @@ Here is a program that prints all the arguments passed to it:
     \texttt{\#include <stdio.h>} \\
     \texttt{} \\
     \texttt{int main(int argc, char **argv) \{} \\
-    \texttt{    printf("I have \%d arguments from the command line\textbackslash n", argc);} \\
-    \texttt{    int i;} \\
-    \texttt{    for (i = 0; i < argc; i++) \{} \\
-    \texttt{        printf("Argument \%d: \%s\textbackslash n", i, argv[i]);} \\
-    \texttt{    \}} \\
+    \texttt{\hspace*{0.5cm} printf("I have \%d arguments from the command line\textbackslash n", argc);} \\
+    \texttt{\hspace*{0.5cm} int i;} \\
+    \texttt{\hspace*{0.5cm} for (i = 0; i < argc; i++) \{} \\
+    \texttt{\hspace*{1cm} printf("Argument \%d: \%s\textbackslash n", i, argv[i]);} \\
+    \texttt{\hspace*{0.5cm} \}} \\
     \texttt{    return 0;} \\
     \texttt{\}}
 \end{tcolorbox}
@@ -1047,22 +1047,146 @@ Here is a program that checks for a specific flag and converts numerical argumen
     \texttt{\#include <stdlib.h>} \\
     \texttt{} \\
     \texttt{int main(int argc, char **argv) \{} \\
-    \texttt{    printf("I have \%d arguments from the command line\textbackslash n", argc);} \\
-    \texttt{    int i;} \\
-    \texttt{    for (i = 0; i < argc; i++) \{} \\
-    \texttt{        printf("Argument \%d: \%s\textbackslash n", i, argv[i]);} \\
-    \texttt{    \}} \\
-    \texttt{    if (argc == 4) \{} \\
-    \texttt{        int compare = strcmp(argv[1], "-e");} \\
-    \texttt{        if (compare == 0) printf("argv[1] equals -e\textbackslash n");} \\
-    \texttt{        else printf("argv[1] does not equal -e\textbackslash n");} \\
-    \texttt{        int wholeNumber = atoi(argv[2]);} \\
-    \texttt{        printf("Argument 2 as integer: \%d\textbackslash n", wholeNumber);} \\
-    \texttt{        double decimalNumber = atof(argv[3]);} \\
-    \texttt{        printf("Argument 3 as double: \%lf\textbackslash n", decimalNumber);} \\
-    \texttt{    \}} \\
+    \texttt{\hspace*{0.5cm} printf("I have \%d arguments from the command line\textbackslash n", argc);} \\
+    \texttt{\hspace*{0.5cm} int i;} \\
+    \texttt{\hspace*{0.5cm} for (i = 0; i < argc; i++) \{} \\
+    \texttt{\hspace*{1cm} printf("Argument \%d: \%s\textbackslash n", i, argv[i]);} \\
+    \texttt{\hspace*{0.5cm} \}} \\
+    \texttt{\hspace*{0.5cm} if (argc == 4) \{} \\
+    \texttt{\hspace*{1cm} int compare = strcmp(argv[1], "-e");} \\
+    \texttt{\hspace*{1cm} if (compare == 0) printf("argv[1] equals -e\textbackslash n");} \\
+    \texttt{\hspace*{1cm} else printf("argv[1] does not equal -e\textbackslash n");} \\
+    \texttt{\hspace*{1cm} int wholeNumber = atoi(argv[2]);} \\
+    \texttt{\hspace*{1cm} printf("Argument 2 as integer: \%d\textbackslash n", wholeNumber);} \\
+    \texttt{\hspace*{1cm} double decimalNumber = atof(argv[3]);} \\
+    \texttt{\hspace*{1cm} printf("Argument 3 as double: \%lf\textbackslash n", decimalNumber);} \\
+    \texttt{\hspace*{0.5cm} \}} \\
     \texttt{    return 0;} \\
     \texttt{\}}
 \end{tcolorbox}
+
+\separator
+
+\section{Read numbers from a file}
+
+So far, whenever one of our programs needed a user input, such as a temperature to be converted from Celsius to Fahrenheit or a student's grade, we have the user enter this input at program execution time in the terminal window. Now imagine you have a lot of data to be entered, be it to compute the average grade in a class for lots of students or something else. In this case, it may be more efficient and easier to read this data in automatically from a file you created previously.
+
+\subsection{The Three Steps}
+There are three steps when reading from a file:
+\begin{enumerate}
+    \item \textbf{Open:} You need to open the file.
+    \item \textbf{Read:} You read from the file.
+    \item \textbf{Close:} When you are done, you need to close the file.
+\end{enumerate}
+
+\subsection{File Structure}
+For this example, we will use a file named \texttt{my\_first\_file.txt}. It is important that there are no spaces in your file names (use underscores instead).
+To simplify reading until the end of the file, we will use a structure where the first entry is the number of entries that follow.
+\begin{itemize}
+    \item \textbf{Example Content:}
+          \begin{tcolorbox}
+              9 \\
+              1 2 3 4 5 6 7 8 9
+          \end{tcolorbox}
+    \item The \texttt{9} indicates that there are nine integers on the next line following.
+\end{itemize}
+
+\subsection{Opening a File}
+To read from a file in C, we use a file pointer.
+\begin{itemize}
+    \item \textbf{File Pointer:} A pointer of type \texttt{FILE} (defined in \texttt{stdio.h}) used to handle and keep track of the file being accessed.
+    \item \textbf{fopen:} The function used to open a file. It returns a file pointer.
+    \item \textbf{Syntax:} \texttt{FILE *ifile = fopen("my\_first\_file.txt", "r");}
+          \begin{itemize}
+              \item The first parameter is the filename in double quotes.
+              \item The second parameter is \texttt{"r"} for \textbf{reading}. (We use \texttt{"w"} for writing and \texttt{"a"} for appending).
+          \end{itemize}
+\end{itemize}
+
+\subsection{Reading from a File}
+We use the \texttt{fscanf} command to read from the file.
+\begin{itemize}
+    \item \textbf{Comparison:} It is just like \texttt{scanf}, but has an extra \texttt{f} in front (file scanf).
+    \item \textbf{Arguments:} It takes an extra first argument: the file pointer.
+    \item \textbf{Example:} \texttt{fscanf(ifile, "\%d", \&N);} reads an integer from the file into variable \texttt{N}.
+\end{itemize}
+
+\subsection{Closing a File}
+We must always close a file when done to prevent data loss.
+\begin{itemize}
+    \item \textbf{Command:} \texttt{fclose(ifile);}
+\end{itemize}
+
+\subsection{Example Program: Reading Integers}
+Here is a program that reads the count of numbers and then loops to read the rest.
+\begin{tcolorbox}
+    \texttt{\#include <stdio.h>} \\
+    \texttt{} \\
+    \texttt{int main(void) \{} \\
+    \texttt{\hspace*{0.5cm} FILE *ifile;} \\
+    \texttt{\hspace*{0.5cm} int N, i, number;} \\
+    \texttt{} \\
+    \texttt{\hspace*{0.5cm} ifile = fopen("my\_first\_file.txt", "r");} \\
+    \texttt{\hspace*{0.5cm} fscanf(ifile, "\%d", \&N);} \\
+    \texttt{\hspace*{0.5cm} printf("There are \%d numbers in the file.\textbackslash n", N);} \\
+    \texttt{} \\
+    \texttt{\hspace*{0.5cm} for (i = 0; i < N; i++) \{} \\
+    \texttt{\hspace*{1cm} fscanf(ifile, "\%d", \&number);} \\
+    \texttt{\hspace*{1cm} printf("I read \%d from the file.\textbackslash n", number);} \\
+    \texttt{\hspace*{0.5cm} \}} \\
+    \texttt{} \\
+    \texttt{\hspace*{0.5cm} fclose(ifile);} \\
+    \texttt{    return 0;} \\
+    \texttt{\}}
+\end{tcolorbox}
+
+\subsection{Example Program: Reading Doubles}
+You can also read doubles. Create a file \texttt{my\_second\_file.txt} with doubles (e.g., \texttt{4.5 6.2 ...}).
+\begin{itemize}
+    \item Change the variable type to \texttt{double}.
+    \item Change the format specifier in \texttt{fscanf} and \texttt{printf} to \texttt{\%lf}.
+\end{itemize}
+
+\end{document}
+
+\subsection{Example Program: Reading Integers}
+Here is a program that reads the count of numbers and then loops to read the rest.
+\begin{tcolorbox}
+    \texttt{\#include <stdio.h>} \\
+    \texttt{} \\
+    \texttt{int main(void) \{} \\
+    \texttt{    FILE *ifile;} \\
+    \texttt{    int N, i, number;} \\
+    \texttt{\hspace*{0.5cm} FILE *ifile;} \\
+    \texttt{\hspace*{0.5cm} int N, i, number;} \\
+    \texttt{} \\
+    \texttt{    ifile = fopen("my\_first\_file.txt", "r");} \\
+    \texttt{    fscanf(ifile, "\%d", \&N);} \\
+    \texttt{    printf("There are \%d numbers in the file.\textbackslash n", N);} \\
+    \texttt{\hspace*{0.5cm} ifile = fopen("my\_first\_file.txt", "r");} \\
+    \texttt{\hspace*{0.5cm} fscanf(ifile, "\%d", \&N);} \\
+    \texttt{\hspace*{0.5cm} printf("There are \%d numbers in the file.\textbackslash n", N);} \\
+    \texttt{} \\
+    \texttt{    for (i = 0; i < N; i++) \{} \\
+    \texttt{        fscanf(ifile, "\%d", \&number);} \\
+    \texttt{        printf("I read \%d from the file.\textbackslash n", number);} \\
+    \texttt{    \}} \\
+    \texttt{\hspace*{0.5cm} for (i = 0; i < N; i++) \{} \\
+    \texttt{\hspace*{1cm} fscanf(ifile, "\%d", \&number);} \\
+    \texttt{\hspace*{1cm} printf("I read \%d from the file.\textbackslash n", number);} \\
+    \texttt{\hspace*{0.5cm} \}} \\
+    \texttt{} \\
+    \texttt{    fclose(ifile);} \\
+    \texttt{\hspace*{0.5cm} fclose(ifile);} \\
+    \texttt{    return 0;} \\
+    \texttt{\}}
+\end{tcolorbox}
+
+\subsection{Example Program: Reading Doubles}
+You can also read doubles. Create a file \texttt{my\_second\_file.txt} with doubles (e.g., \texttt{4.5 6.2 ...}).
+\begin{itemize}
+    \item Change the variable type to \texttt{double}.
+    \item Change the format specifier in \texttt{fscanf} and \texttt{printf} to \texttt{\%lf}.
+\end{itemize}
 
 \end{document}
