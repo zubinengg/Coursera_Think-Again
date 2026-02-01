@@ -848,4 +848,130 @@ However, to run the program, the operating system must be able to find the share
 \end{table}
 
 
+\section{Modify your library}
+
+In this section, we will look at how to make modifications to a static library and to a program that uses it. We assume we have \texttt{program.c} and \texttt{weatherstats.c}, but we haven't created the library \texttt{libweather.a} yet.
+
+\subsection{Creating the Initial Library}
+First, we compile the existing module \texttt{weatherstats.c} into an object file.
+\begin{tcolorbox}
+    \texttt{gcc -c weatherstats.c -o weatherstats.o}
+\end{tcolorbox}
+
+Then, we create the static library archive \texttt{libweather.a}.
+\begin{tcolorbox}
+    \texttt{ar rcs libweather.a weatherstats.o}
+\end{tcolorbox}
+
+\subsection{Adding a New Module}
+We want to add a function that prints out temperatures. We create a new source file named \texttt{weatherio.c}.
+
+\subsubsection{The Source Code (weatherio.c)}
+\begin{tcolorbox}
+    \texttt{\#include <stdio.h>} \\
+    \texttt{} \\
+    \texttt{void printTemps(double *temperatures, int size) \{} \\
+    \texttt{    printf("Over the past \%d days the temperatures were:\textbackslash n", size);} \\
+    \texttt{    int i;} \\
+    \texttt{    for (i = 0; i < size; i++) \{} \\
+    \texttt{        printf("On day \%d the temperature was \%.2lf\textbackslash n", i + 1, temperatures[i]);} \\
+    \texttt{    \}} \\
+    \texttt{\}}
+\end{tcolorbox}
+
+\subsubsection{The Header File (weatherio.h)}
+We also create the header file with the function prototype.
+\begin{tcolorbox}
+    \texttt{void printTemps(double *temperatures, int size);}
+\end{tcolorbox}
+
+\subsubsection{Compiling the New Module}
+We compile this new file into an object file.
+\begin{tcolorbox}
+    \texttt{gcc -c weatherio.c -o weatherio.o}
+\end{tcolorbox}
+
+\subsection{Updating the Library}
+Now we add the new object file to our existing library. We can simply run the \texttt{ar} command again with all the object files we want in the library.
+\begin{tcolorbox}
+    \texttt{ar rcs libweather.a weatherstats.o weatherio.o}
+\end{tcolorbox}
+The library \texttt{libweather.a} now contains both \texttt{weatherstats.o} and \texttt{weatherio.o}.
+
+\subsection{Using the Updated Library}
+To use the new function in our main program, we need to update \texttt{program.c} and manage our headers.
+
+\subsubsection{Creating a Master Header (weather.h)}
+Instead of including multiple header files in \texttt{program.c}, it is cleaner to create a single header file for the library that includes the others.
+\begin{tcolorbox}
+    \texttt{\#include "weatherstats.h"} \\
+    \texttt{\#include "weatherio.h"}
+\end{tcolorbox}
+
+\subsubsection{Updating the Main Program}
+In \texttt{program.c}, we include the new master header and call the \texttt{printTemps} function.
+\begin{tcolorbox}
+    \texttt{\#include "weather.h"} \\
+    \texttt{...} \\
+    \texttt{printTemps(temperatures, 7);}
+\end{tcolorbox}
+
+\subsubsection{Compiling and Linking}
+We can compile the program and link it with the library in a single command. We use \texttt{-L.} to tell GCC to look in the current directory for libraries, and \texttt{-lweather} to link against \texttt{libweather.a}.
+\begin{tcolorbox}
+    \texttt{gcc program.c -L. -lweather -o program}
+\end{tcolorbox}
+Running \texttt{./program} will now display the temperatures using the new function from the updated library.
+
+\separator
+
+\section{Ultimate makefile}
+
+Let's finish this section on libraries by updating our previous Makefiles. We assume that our library \texttt{libweather.a} exists and is unchanged. Therefore, our Makefile will only be concerned with creating the executable program.
+
+\subsection{Updating the Simple Makefile}
+The program no longer depends on \texttt{weatherstats.o} because we are using the library. We update the build command to include the library path (\texttt{-L.}) and the library itself (\texttt{-lweather}).
+
+\begin{tcolorbox}
+    \texttt{program: program.o} \\
+    \texttt{\hspace*{1cm} gcc -std=C11 -Wall -fmax-errors=10 -Wextra -o program program.o -L. -lweather} \\
+    \texttt{} \\
+    \texttt{program.o: program.c} \\
+    \texttt{\hspace*{1cm} gcc -std=C11 -Wall -fmax-errors=10 -Wextra -c program.c -o program.o} \\
+    \texttt{} \\
+    \texttt{launch: program} \\
+    \texttt{\hspace*{1cm} ./program}
+\end{tcolorbox}
+
+When we run \texttt{make launch}, \texttt{make} will check dependencies: it builds \texttt{program.o} from \texttt{program.c}, then builds \texttt{program} by linking \texttt{program.o} with the library, and finally executes it.
+
+\subsection{Updating the Elaborate Makefile}
+We can also adjust the more general Makefile to accommodate the library usage. We introduce variables for the library flags and names.
+
+\begin{tcolorbox}
+    \texttt{CC = gcc} \\
+    \texttt{CFLAGS = -std=c11 -Wall -fmax-errors=10 -Wextra} \\
+    \texttt{LFLAGS = -L.} \\
+    \texttt{LIBS = -lweather} \\
+    \texttt{} \\
+    \texttt{OBJ = program.o} \\
+    \texttt{MAIN = program} \\
+    \texttt{} \\
+    \texttt{all: \$(MAIN)} \\
+    \texttt{} \\
+    \texttt{\$(MAIN): \$(OBJ)} \\
+    \texttt{\hspace*{1cm} \$(CC) \$(CFLAGS) -o \$(MAIN) \$(OBJ) \$(LFLAGS) \$(LIBS)} \\
+    \texttt{} \\
+    \texttt{\%.o: \%.c} \\
+    \texttt{\hspace*{1cm} \$(CC) \$(CFLAGS) -c \$< -o \$@} \\
+    \texttt{} \\
+    \texttt{launch: \$(MAIN)} \\
+    \texttt{\hspace*{1cm} ./\$(MAIN)} \\
+    \texttt{} \\
+    \texttt{clean:} \\
+    \texttt{\hspace*{1cm} rm *.o \$(MAIN)}
+\end{tcolorbox}
+
+This Makefile is versatile. You can use it for other projects by simply updating the variables at the top. The \texttt{clean} target allows you to start from a clean slate by removing object files and the executable.
+
 \end{document}
