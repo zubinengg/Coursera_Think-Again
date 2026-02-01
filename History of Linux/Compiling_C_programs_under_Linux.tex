@@ -1015,4 +1015,54 @@ Here is a program that prints all the arguments passed to it:
 
 If we run \texttt{./program -e -t}, \texttt{argc} will be 3. Argument 0 is \texttt{./program}, argument 1 is \texttt{-e}, and argument 2 is \texttt{-t}.
 
+\separator
+
+\section{Use arguments passed to a program from the command line}
+
+In this section, we will look at a program that allows you to recover arguments of different types passed to your main function from the command line.
+
+\subsection{The Problem: All Arguments are Strings}
+When you pass arguments like \texttt{-e}, \texttt{43}, and \texttt{27.88} to your program, they are all received as strings (arrays of characters) in the \texttt{argv} array.
+\begin{itemize}
+    \item \texttt{-e} is a string.
+    \item \texttt{43} is received as the string "43", not the number 43.
+    \item \texttt{27.88} is received as the string "27.88".
+\end{itemize}
+To use these as numbers (e.g., to do math), we must convert them.
+
+\subsection{Tools for Conversion and Comparison}
+We use specific functions from the standard libraries to handle these conversions.
+\begin{itemize}
+    \item \textbf{strcmp:} Defined in \texttt{<string.h>}. It compares two strings. It returns \texttt{0} if the strings are identical.
+    \item \textbf{atoi:} Defined in \texttt{<stdlib.h>}. Stands for "ASCII to Integer". It converts a string to an \texttt{int}.
+    \item \textbf{atof:} Defined in \texttt{<stdlib.h>}. Stands for "ASCII to Float". It converts a string to a \texttt{double}.
+\end{itemize}
+
+\subsection{Example Program}
+Here is a program that checks for a specific flag and converts numerical arguments.
+
+\begin{tcolorbox}
+    \texttt{\#include <stdio.h>} \\
+    \texttt{\#include <string.h>} \\
+    \texttt{\#include <stdlib.h>} \\
+    \texttt{} \\
+    \texttt{int main(int argc, char **argv) \{} \\
+    \texttt{    printf("I have \%d arguments from the command line\textbackslash n", argc);} \\
+    \texttt{    int i;} \\
+    \texttt{    for (i = 0; i < argc; i++) \{} \\
+    \texttt{        printf("Argument \%d: \%s\textbackslash n", i, argv[i]);} \\
+    \texttt{    \}} \\
+    \texttt{    if (argc == 4) \{} \\
+    \texttt{        int compare = strcmp(argv[1], "-e");} \\
+    \texttt{        if (compare == 0) printf("argv[1] equals -e\textbackslash n");} \\
+    \texttt{        else printf("argv[1] does not equal -e\textbackslash n");} \\
+    \texttt{        int wholeNumber = atoi(argv[2]);} \\
+    \texttt{        printf("Argument 2 as integer: \%d\textbackslash n", wholeNumber);} \\
+    \texttt{        double decimalNumber = atof(argv[3]);} \\
+    \texttt{        printf("Argument 3 as double: \%lf\textbackslash n", decimalNumber);} \\
+    \texttt{    \}} \\
+    \texttt{    return 0;} \\
+    \texttt{\}}
+\end{tcolorbox}
+
 \end{document}
