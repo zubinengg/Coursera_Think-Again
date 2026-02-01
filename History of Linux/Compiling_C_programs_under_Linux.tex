@@ -974,4 +974,45 @@ We can also adjust the more general Makefile to accommodate the library usage. W
 
 This Makefile is versatile. You can use it for other projects by simply updating the variables at the top. The \texttt{clean} target allows you to start from a clean slate by removing object files and the executable.
 
+\separator
+
+\section{Pass arguments to a program from the command line}
+
+In this section, we will learn how to pass arguments to a C program directly from the command line, similar to how we pass options to standard commands like \texttt{ls -l}.
+
+\subsection{Modifying the main function}
+To accept command-line arguments, we need to modify the signature of the \texttt{main} function. Instead of \texttt{int main(void)} or empty parentheses, we use:
+
+\begin{tcolorbox}
+    \texttt{int main(int argc, char *argv[])}
+\end{tcolorbox}
+
+Alternatively, you can write \texttt{char **argv}. This emphasizes that \texttt{argv} is a pointer to a pointer (a matrix or array of strings).
+
+\subsection{Understanding argc and argv}
+\begin{itemize}
+    \item \textbf{argc (Argument Count):} An integer representing the number of arguments passed.
+    \item \textbf{argv (Argument Vector):} An array of strings (pointers to characters) containing the actual arguments.
+\end{itemize}
+
+\textbf{Important Note:} \texttt{argc} is always at least 1 because the name of the program itself is counted as the first argument (at index 0).
+
+\subsection{Example Program}
+Here is a program that prints all the arguments passed to it:
+
+\begin{tcolorbox}
+    \texttt{\#include <stdio.h>} \\
+    \texttt{} \\
+    \texttt{int main(int argc, char **argv) \{} \\
+    \texttt{    printf("I have \%d arguments from the command line\textbackslash n", argc);} \\
+    \texttt{    int i;} \\
+    \texttt{    for (i = 0; i < argc; i++) \{} \\
+    \texttt{        printf("Argument \%d: \%s\textbackslash n", i, argv[i]);} \\
+    \texttt{    \}} \\
+    \texttt{    return 0;} \\
+    \texttt{\}}
+\end{tcolorbox}
+
+If we run \texttt{./program -e -t}, \texttt{argc} will be 3. Argument 0 is \texttt{./program}, argument 1 is \texttt{-e}, and argument 2 is \texttt{-t}.
+
 \end{document}
