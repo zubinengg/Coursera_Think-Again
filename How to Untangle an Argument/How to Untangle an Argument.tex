@@ -1,0 +1,122 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz}
+\usepackage{lmodern}
+\usepackage{hyperref}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{parskip}
+\usepackage{tabularx}
+\usepackage[utf8]{inputenc}
+\usepackage{tgpagella}
+\usepackage[T1]{fontenc}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{tcolorbox}
+\usepackage{enumitem}
+
+\newcommand{\separator}{\noindent\rule{\linewidth}{1pt}}
+
+\title{Think Again: How to Untangle an Arguments}
+\author{Zubin}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+
+\separator
+%-----------------------------------------------------------------
+
+\section{Argument Markers}
+To spot an argument, we need to understand how language indicates that some sentences are intended as reasons for others. Certain words, which we will call \textbf{argument markers}, signal the presence of an argument by clarifying the relationship between premises and conclusions.
+
+\subsection{Identifying Intent}
+The difference between simply stating two facts and presenting an argument lies in the speaker's intent, which is revealed through word choice.
+\begin{itemize}
+    \item \textbf{Conjunction:} In the sentence, ``I am tall, and I am good at sports,'' the word ``and'' simply conjoins two separate statements. The order can be reversed without changing the meaning.
+    \item \textbf{Argument:} In ``I am tall, so I am good at sports,'' the word ``so'' indicates a rational connection. The order matters greatly; reversing it (``I am good at sports, so I am tall'') creates a different argument.
+\end{itemize}
+
+\subsection{Types of Argument Markers}
+Argument markers fall into two main categories based on what they signal.
+
+\subsubsection{Conclusion Markers}
+These words indicate that the statement immediately following them is the conclusion of an argument.
+\begin{itemize}
+    \item \textbf{Examples:} so, therefore, thus, hence, accordingly.
+    \item \textbf{Structure:} [Premise], so [Conclusion].
+    \item \textbf{Example:} ``I am tall, \textit{therefore} I am good at sports.''
+\end{itemize}
+
+\subsubsection{Reason Markers (Premise Markers)}
+These words indicate that the statement immediately following them is a reason (a premise) for a conclusion.
+\begin{itemize}
+    \item \textbf{Examples:} because, for, as, since, for the reason that.
+    \item \textbf{Structure:} [Conclusion] because [Premise].
+    \item \textbf{Example:} ``I am good at sports \textit{because} I am tall.''
+\end{itemize}
+
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=Argument Markers]
+    \begin{tabularx}{\linewidth}{@{}XX@{}}
+        \toprule
+        \textbf{Conclusion Markers} & \textbf{Reason (Premise) Markers} \\
+        \midrule
+        so                          & because                           \\
+        therefore                   & for                               \\
+        thus                        & as                                \\
+        hence                       & since                             \\
+        accordingly                 & for the reason that               \\
+        \bottomrule
+    \end{tabularx}
+\end{tcolorbox}
+
+\subsection{The Importance of Context}
+A word that functions as an argument marker in one context may not in another. You must analyze the role the word is playing.
+
+\begin{itemize}
+    \item \textbf{Example with ``since'':}
+          \begin{itemize}
+              \item \textit{As a reason marker:} ``I'm good at sports \textbf{since} I am tall.'' (Here, being tall is the reason for being good at sports).
+              \item \textit{As a temporal marker:} ``It has been raining \textbf{since} my vacation began.'' (This indicates timing, not a causal or rational link).
+          \end{itemize}
+    \item \textbf{Example with ``so'':}
+          \begin{itemize}
+              \item \textit{As a conclusion marker:} ``I am tall, \textbf{so} I am good at sports.''
+              \item \textit{As an intensifier:} ``You don't need to eat \textbf{so} much.'' (This does not indicate a conclusion).
+          \end{itemize}
+\end{itemize}
+
+\subsection{The Substitution Test}
+To determine if a word is being used as an argument marker, try substituting it with a clear, unambiguous marker like ``therefore'' (for conclusions) or ``because'' (for reasons).
+\begin{itemize}
+    \item \textbf{Rule:} If the substitution can be made without changing the fundamental meaning of the sentence, then the original word was likely being used as an argument marker.
+    \item \textbf{Example 1:} ``Since he failed out of college, he's unemployed.''
+          \begin{itemize}
+              \item \textit{Substitute with ``because'':} ``\textbf{Because} he failed out of college, he's unemployed.'' The meaning is preserved.
+              \item \textit{Conclusion:} ``Since'' is used as a reason marker here.
+          \end{itemize}
+    \item \textbf{Example 2:} ``He's so cool!''
+          \begin{itemize}
+              \item \textit{Substitute with ``therefore'' or ``because'':} ``He's therefore cool'' or ``He's because cool.'' Both are nonsensical and change the meaning.
+              \item \textit{Conclusion:} ``So'' is not used as an argument marker here.
+          \end{itemize}
+\end{itemize}
+
+\subsection{A Special Case: The Word ``If''}
+The word ``if,'' often found in ``if...then'' statements (conditionals), is \textbf{not} an argument marker.
+\begin{itemize}
+    \item An ``if-then'' statement by itself does not make an argument because it does not assert that the ``if'' clause (the antecedent) is true.
+    \item \textbf{Conditional Statement (Not an Argument):} ``If I am rich enough, then I can buy a baseball team.'' This doesn't claim I am rich, nor that I can buy a team.
+    \item \textbf{Full Argument:} ``If I'm rich enough, I can buy a baseball team. I am rich enough. Therefore, I can buy a baseball team.''
+    \item Because the word ``if'' alone does not assert a premise, we do not count it as an argument marker.
+\end{itemize}
+
+\separator
+
+\end{document}
